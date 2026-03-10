@@ -1,5 +1,7 @@
 # R&D audit TeX pack
 
+[![Build TeX with Tectonic](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml/badge.svg)](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml)
+
 Files in this pack:
 
 - `01_overview_of_all_work.tex` - annual overview / master narrative
