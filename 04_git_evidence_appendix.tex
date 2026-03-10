@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{Git Evidence Appendix}
+\RDCompany{[Company Name]}
+\RDFY{[YYYY-YYYY]}
+\RDPreparedBy{[Engineering Lead / Repository Owner]}
+\RDVersion{v1.0}
+\RDConfidentiality{Internal / Technical Appendix}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{Purpose}
+\RDSectionIntro{This appendix is designed to import repository logs generated outside LaTeX so the claim pack can preserve a readable commit trail without manual copy and paste. Export the logs to plain-text files first, then compile this document.}
+
+\RDAuditNote{A git log is not enough by itself. It supports chronology and technical traceability, but should be paired with notebook entries, ticket references, benchmark results, diagrams, and expenditure schedules.}
+
+\section{Recommended export fields}
+\begin{Verbatim}[fontsize=\small,frame=single]
+%h | %ad | %an | %d | %s
+\end{Verbatim}
+
+\subsection{Example export command}
+\begin{Verbatim}[fontsize=\small,frame=single]
+git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short --pretty=format:"%h | %ad | %an | %d | %s" > evidence/git/repo-main.txt
+\end{Verbatim}
+
+\section{Repository imports}
+
+\subsection{Primary application repository}
+\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
+\IfFileExists{evidence/git/repo-main.txt}{%
+  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-main.txt}%
+}{%
+  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-main.txt}}%
+}
+
+\subsection{Shared library repository}
+\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
+\IfFileExists{evidence/git/repo-shared.txt}{%
+  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-shared.txt}%
+}{%
+  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-shared.txt}}%
+}
+
+\subsection{Infrastructure / deployment repository}
+\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
+\IfFileExists{evidence/git/repo-infra.txt}{%
+  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-infra.txt}%
+}{%
+  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-infra.txt}}%
+}
+
+\subsection{Mobile / client application repository}
+\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
+\IfFileExists{evidence/git/repo-mobile.txt}{%
+  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-mobile.txt}%
+}{%
+  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-mobile.txt}}%
+}
+
+\section{Commit interpretation notes}
+\begin{RDChecklist}
+\item Highlight commit clusters that align with discrete experiments.
+\item Mark commits that were exploratory, benchmarking, instrumentation, or prototype related.
+\item Link major merge ranges back to notebook run IDs or project IDs.
+\item Exclude or separately note routine housekeeping, content-only changes, or unrelated operational work where appropriate.
+\end{RDChecklist}
+
+\section{Manual summary table for high-value commits}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.1cm}L{2.2cm}L{2.8cm}Y}
+\rowcolor{RDBand}
+\textbf{Commit} & \textbf{Date} & \textbf{Project / run ref} & \textbf{Why material to the R\&D record} \\
+{[hash]} & {[date]} & {[ref]} & {[Reason]} \\
+{[hash]} & {[date]} & {[ref]} & {[Reason]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\RDEndMatter
+\end{document}

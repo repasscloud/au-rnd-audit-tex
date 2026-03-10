@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{Infrastructure Cost Allocation Worksheets}
+\RDCompany{[Company Name]}
+\RDFY{[YYYY-YYYY]}
+\RDPreparedBy{[Finance / Engineering / Operations]}
+\RDVersion{v1.0}
+\RDConfidentiality{Internal / Cost Support}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{Purpose}
+\RDSectionIntro{This workbook supports infrastructure and tooling apportionment by preserving a repeatable method for attributing shared technical costs to R\&D activities.}
+
+\RDAuditNote{Do not rely on unsupported flat percentages where a better allocation basis exists. Use tagged resources, environment-specific billing, workload counts, engineer usage logs, or other defensible methods wherever practical.}
+
+\section{Allocation method statement}
+Describe the principles used for apportionment. Examples include environment-based allocation, tagged cloud resources, usage-hour ratios, experiment-run counts, or repository / CI workload mapping.
+
+\section{Monthly infrastructure worksheet}
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}Y@{}}
+\textbf{Month:} & {[Month / Year]} \\
+\textbf{Billing export reference:} & {[Invoice / export ID]} \\
+\textbf{Prepared by:} & {[Name]} \\
+\end{tabularx}
+
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.2cm}L{1.8cm}L{1.8cm}L{1.8cm}L{1.9cm}Y}
+\rowcolor{RDBand}
+\textbf{Service} & \textbf{Provider} & \textbf{Total cost} & \textbf{R\&D \%} & \textbf{R\&D amount} & \textbf{Allocation basis / notes} \\
+{Compute environment} & {Cloud} & {\$0.00} & {0\%} & {\$0.00} & {Tagged experimental environment} \\
+{Managed database} & {Cloud} & {\$0.00} & {0\%} & {\$0.00} & {Used by prototype workloads} \\
+{CI/CD minutes} & {Provider} & {\$0.00} & {0\%} & {\$0.00} & {Build usage linked to experimental branches} \\
+{Monitoring / logging} & {Provider} & {\$0.00} & {0\%} & {\$0.00} & {Apportioned to R\&D environments} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Shared tooling worksheet}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.6cm}L{1.8cm}L{1.8cm}L{1.9cm}Y}
+\rowcolor{RDBand}
+\textbf{Tool / licence} & \textbf{Cost} & \textbf{R\&D \%} & \textbf{R\&D amount} & \textbf{Reasoning} \\
+{Tool placeholder} & {\$0.00} & {0\%} & {\$0.00} & {How the licence supports the claimed activities} \\
+{Tool placeholder} & {\$0.00} & {0\%} & {\$0.00} & {How the licence supports the claimed activities} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Allocation basis register}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.4cm}L{3.2cm}Y}
+\rowcolor{RDBand}
+\textbf{Cost pool} & \textbf{Allocation method} & \textbf{Source evidence} \\
+{Cloud experimental environment} & {Tagged spend / environment mapping} & {Billing tags / infra diagrams / deployment records} \\
+{CI build costs} & {Branch / job usage ratio} & {CI usage export / repo evidence} \\
+{Observability tools} & {Environment share or usage hours} & {Provider invoice / project allocation notes} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Annual roll-up}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{4.0cm}L{2.0cm}L{2.0cm}Y}
+\rowcolor{RDBand}
+\textbf{Category} & \textbf{Annual total} & \textbf{Eligible amount} & \textbf{Reference} \\
+{Compute} & {\$0.00} & {\$0.00} & {Monthly worksheet refs} \\
+{Database} & {\$0.00} & {\$0.00} & {Monthly worksheet refs} \\
+{CI/CD} & {\$0.00} & {\$0.00} & {Monthly worksheet refs} \\
+{Monitoring / logging} & {\$0.00} & {\$0.00} & {Monthly worksheet refs} \\
+{Developer tools} & {\$0.00} & {\$0.00} & {Licence schedule refs} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Review checklist}
+\begin{RDChecklist}
+\item Allocation methods are consistent month to month unless a documented reason exists.
+\item Shared production costs are not treated as fully experimental unless justified.
+\item Billing references can be reproduced.
+\item R\&D percentages tie back to a documented method.
+\item Totals flow into the annual claim pack without manual re-keying where possible.
+\end{RDChecklist}
+
+\RDEndMatter
+\end{document}

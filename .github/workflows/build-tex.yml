@@ -1,0 +1,33 @@
+name: Build TeX with Tectonic
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Tectonic
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
+          sudo mv tectonic /usr/local/bin/tectonic
+          tectonic --version
+
+      - name: Compile all .tex files
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for f in *.tex; do
+            echo "Compiling $f"
+            tectonic "$f"
+          done
