@@ -1,6 +1,6 @@
 # R&D audit TeX pack
 
-[![Build TeX with Tectonic](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml/badge.svg)](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml)
+[![Build TeX with Tectonic](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml/badge.svg?branch=main)](https://github.com/repasscloud/au-rnd-audit-tex/actions/workflows/build-tex.yml)
 
 Files in this pack:
 
