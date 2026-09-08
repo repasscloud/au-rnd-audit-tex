@@ -19,21 +19,21 @@
 \RDAuditNote{A git log is not enough by itself. It supports chronology and technical traceability, but should be paired with notebook entries, ticket references, benchmark results, diagrams, and expenditure schedules.}
 
 \section{Recommended export fields}
-\begin{Verbatim}[fontsize=\small,frame=single]
+\begin{lstlisting}
 %h | %ad | %an | %d | %s
-\end{Verbatim}
+\end{lstlisting}
 
 \subsection{Example export command}
-\begin{Verbatim}[fontsize=\small,frame=single]
+\begin{lstlisting}
 git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short --pretty=format:"%h | %ad | %an | %d | %s" > evidence/git/repo-main.txt
-\end{Verbatim}
+\end{lstlisting}
 
 \section{Repository imports}
 
 \subsection{Primary application repository}
 \RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
 \IfFileExists{evidence/git/repo-main.txt}{%
-  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-main.txt}%
+  \lstinputlisting{evidence/git/repo-main.txt}%
 }{%
   \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-main.txt}}%
 }
@@ -41,7 +41,7 @@ git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short 
 \subsection{Shared library repository}
 \RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
 \IfFileExists{evidence/git/repo-shared.txt}{%
-  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-shared.txt}%
+  \lstinputlisting{evidence/git/repo-shared.txt}%
 }{%
   \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-shared.txt}}%
 }
@@ -49,7 +49,7 @@ git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short 
 \subsection{Infrastructure / deployment repository}
 \RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
 \IfFileExists{evidence/git/repo-infra.txt}{%
-  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-infra.txt}%
+  \lstinputlisting{evidence/git/repo-infra.txt}%
 }{%
   \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-infra.txt}}%
 }
@@ -57,7 +57,7 @@ git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short 
 \subsection{Mobile / client application repository}
 \RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
 \IfFileExists{evidence/git/repo-mobile.txt}{%
-  \VerbatimInput[fontsize=\small,frame=single]{evidence/git/repo-mobile.txt}%
+  \lstinputlisting{evidence/git/repo-mobile.txt}%
 }{%
   \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-mobile.txt}}%
 }

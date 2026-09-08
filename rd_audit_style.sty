@@ -21,7 +21,8 @@
 \RequirePackage{multirow}
 \RequirePackage{makecell}
 \RequirePackage{graphicx}
-\RequirePackage{fancyvrb}
+\RequirePackage{listings}
+
 \RequirePackage{lastpage}
 \RequirePackage{etoolbox}
 \RequirePackage{needspace}
@@ -53,6 +54,16 @@
 \definecolor{RDWarnLine}{HTML}{E5B14C}
 \definecolor{RDGood}{HTML}{EDF8F0}
 \definecolor{RDGoodLine}{HTML}{6AA676}
+
+\lstset{
+  basicstyle=\small\ttfamily,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
 
 \hypersetup{
   colorlinks=true,
@@ -204,12 +215,12 @@
 \newcommand{\RDGitImportBlock}[2]{%
 \subsection{#1}
 \RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
-\begin{Verbatim}[fontsize=\small,frame=single]
+\begin{lstlisting}
 ## Example export command
 ## git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" \
 ##   --date=short --pretty=format:"%h | %ad | %an | %d | %s" > #2
-\end{Verbatim}
-\IfFileExists{#2}{\VerbatimInput[fontsize=\small,frame=single]{#2}}{\RDCallout{Pending evidence import}{Expected git evidence file: \texttt{#2}}}
+\end{lstlisting}
+\IfFileExists{#2}{\lstinputlisting{#2}}{\RDCallout{Pending evidence import}{Expected git evidence file: \texttt{#2}}}
 }
 
 \newcommand{\RDEndMatter}{%

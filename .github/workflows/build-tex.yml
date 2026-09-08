@@ -22,12 +22,6 @@ jobs:
           sudo mv tectonic /usr/local/bin/tectonic
           tectonic --version
 
-      - name: Compile all .tex files
+      - name: Compile all .tex files without warnings
         shell: bash
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          for f in *.tex; do
-            echo "Compiling $f"
-            tectonic "$f"
-          done
+        run: ./test-build.sh
