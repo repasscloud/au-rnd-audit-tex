@@ -42,6 +42,22 @@ class PublisherTests(unittest.TestCase):
         self.assertGreaterEqual(len(run["execution_log"]), 1)
         self.assertGreaterEqual(len(run["evidence"]), 1)
 
+    def test_ignores_template_files_when_loading_active_sources(self) -> None:
+        (self.input_dir / "experiments.template.yaml").write_text(
+            "experiments:\n  - id: RUN-2099-999\n",
+            encoding="utf-8",
+        )
+        (self.input_dir / "experiment-results.template.csv").write_text(
+            "run_id,sequence,kind,metric,baseline_value,observed_value,unit,notes,evidence_ref\n"
+            "RUN-2099-999,1,qualitative,template only,absent,present,not_applicable,"
+            "Template row,EV-9999\n",
+            encoding="utf-8",
+        )
+
+        sources = load_sources(self.input_dir)
+
+        self.assertNotIn("RUN-2099-999", {run["id"] for run in sources["experiments"]})
+
     def test_invalid_sources_do_not_overwrite_generated_files(self) -> None:
         output_dir = Path(self.temporary_directory.name) / "generated"
         output_dir.mkdir()

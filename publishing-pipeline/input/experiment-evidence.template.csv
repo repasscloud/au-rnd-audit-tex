@@ -1,0 +1,3 @@
+evidence_id,run_id,type,title,location,captured_at,notes
+EV-0001,RUN-2026-001,test-report,Experiment report,evidence/experiments/RUN-2026-001/report.txt,2026-07-14T12:05:00+09:30,Describe what the referenced record contains
+EV-0002,RUN-2026-002,activity-export,Activity export,evidence/experiments/RUN-2026-002/activity.csv,2026-07-15T09:20:00+09:30,Describe the unresolved observation

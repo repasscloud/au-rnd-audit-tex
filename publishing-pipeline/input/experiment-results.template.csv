@@ -1,0 +1,3 @@
+run_id,sequence,kind,metric,baseline_value,observed_value,unit,notes,evidence_ref
+RUN-2026-001,1,quantitative,p95 response latency,820,310,milliseconds,Measured under the declared load profile,EV-0001
+RUN-2026-002,1,qualitative,recovery decision,absent,inconclusive,not_applicable,Available evidence did not support a terminal decision,EV-0002
