@@ -186,6 +186,12 @@ def render_documents(template_dir: Path, generated_dir: Path, sources: dict[str,
     return rendered
 
 
+def publish_sources(input_dir: Path, template_dir: Path, generated_dir: Path) -> list[Path]:
+    """Validate every source before writing any generated document."""
+    sources = load_sources(input_dir)
+    return render_documents(template_dir, generated_dir, sources)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate source data and generate the R&D audit LaTeX pack.")
     parser.add_argument("--input", type=Path, required=True)
@@ -193,8 +199,7 @@ def main() -> int:
     parser.add_argument("--generated", type=Path, required=True)
     args = parser.parse_args()
     try:
-        sources = load_sources(args.input)
-        rendered = render_documents(args.templates, args.generated, sources)
+        rendered = publish_sources(args.input, args.templates, args.generated)
     except SourceValidationError as error:
         parser.exit(1, f"Source validation failed: {error}\n")
     print(f"Generated {len(rendered)} LaTeX documents in {args.generated}")

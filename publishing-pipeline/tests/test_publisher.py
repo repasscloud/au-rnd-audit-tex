@@ -9,7 +9,7 @@ from pathlib import Path
 PIPELINE_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PIPELINE_ROOT / "scripts"))
 
-from publisher import SourceValidationError, latex_escape, load_sources, render_documents
+from publisher import SourceValidationError, latex_escape, load_sources, publish_sources, render_documents
 
 
 class PublisherTests(unittest.TestCase):
@@ -32,6 +32,30 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(sources["experiments"][0]["id"], "RUN-2026-001")
         self.assertEqual(sources["timesheets"][0]["category"], "core")
         self.assertEqual(sources["infrastructure_costs"][0]["eligible_amount"], "50.00")
+
+    def test_loads_normalized_experiment_children(self) -> None:
+        sources = load_sources(self.input_dir)
+
+        run = sources["experiments"][0]
+        self.assertEqual(run["id"], "RUN-2026-001")
+        self.assertGreaterEqual(len(run["results"]), 1)
+        self.assertGreaterEqual(len(run["execution_log"]), 1)
+        self.assertGreaterEqual(len(run["evidence"]), 1)
+
+    def test_invalid_sources_do_not_overwrite_generated_files(self) -> None:
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        output_dir.mkdir()
+        sentinel = output_dir / "02_experiment_notebook.tex"
+        sentinel.write_text("existing generated evidence\n", encoding="utf-8")
+        (self.input_dir / "experiment-results.csv").write_text(
+            "run_id,sequence,kind,metric,baseline_value,observed_value,unit,notes,evidence_ref\n",
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(SourceValidationError, "requires at least one results record"):
+            publish_sources(self.input_dir, PIPELINE_ROOT / "templates", output_dir)
+
+        self.assertEqual(sentinel.read_text(encoding="utf-8"), "existing generated evidence\n")
 
     def test_rejects_missing_required_document_field(self) -> None:
         claim_path = self.input_dir / "claim.yaml"
