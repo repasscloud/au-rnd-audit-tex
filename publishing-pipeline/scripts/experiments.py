@@ -63,6 +63,7 @@ RUN_ID_PATTERN = re.compile(r"RUN-\d{4}-\d{3}")
 PROJECT_ID_PATTERN = re.compile(r"RND-\d{4}-\d{2}")
 UNCERTAINTY_ID_PATTERN = re.compile(r"UT-\d{2}")
 PERSON_ID_PATTERN = re.compile(r"P-\d{3}")
+EVIDENCE_ID_PATTERN = re.compile(r"EV-\d{4}")
 
 
 def _is_placeholder(value: str) -> bool:
@@ -336,6 +337,17 @@ def validate_and_normalize_experiments(
                 )
             _require_text(experiment, "interim_conclusion")
             _require_text_list(experiment, "next_actions")
+        if status in COMPLETED_STATUSES and "next_actions" in experiment:
+            next_actions = experiment["next_actions"]
+            if not isinstance(next_actions, list):
+                raise SourceValidationError(
+                    f"experiments.yaml run {run_id} next_actions must be a list"
+                )
+            for action in next_actions:
+                if not isinstance(action, str) or not action.strip() or _is_placeholder(action):
+                    raise SourceValidationError(
+                        f"experiments.yaml run {run_id} next_actions must contain non-placeholder text"
+                    )
 
         run = deepcopy(experiment)
         run["_started_at"] = started_at
@@ -386,6 +398,12 @@ def validate_and_normalize_experiments(
     for row_number, row in enumerate(evidence, start=2):
         filename = "experiment-evidence.csv"
         evidence_id = _required_row_text(filename, row_number, row, "evidence_id")
+        _validate_id(
+            evidence_id,
+            EVIDENCE_ID_PATTERN,
+            source=f"{filename} row {row_number}",
+            field="evidence_id",
+        )
         run_id = _required_row_text(filename, row_number, row, "run_id")
         if run_id not in by_id:
             raise SourceValidationError(
@@ -403,6 +421,10 @@ def validate_and_normalize_experiments(
         item = dict(row)
         item["captured_at_display"] = _display_timestamp(captured_at)
         item["notes"] = row["notes"].strip()
+        if item["notes"] and _is_placeholder(item["notes"]):
+            raise SourceValidationError(
+                f"{filename} row {row_number} contains placeholder text at notes"
+            )
         by_id[run_id]["evidence"].append(item)
         evidence_index[evidence_id] = (run_id, row_number)
 
@@ -445,6 +467,10 @@ def validate_and_normalize_experiments(
                 for field in ("metric", "baseline_value", "observed_value"):
                     _required_row_text(filename, row_number, row, field)
                 unit = row["unit"].strip()
+                if unit and _is_placeholder(unit):
+                    raise SourceValidationError(
+                        f"{filename} row {row_number} contains placeholder text at unit"
+                    )
                 if kind == "quantitative" and not unit:
                     raise SourceValidationError(
                         f"{filename} row {row_number} unit is required for quantitative results"
@@ -474,6 +500,10 @@ def validate_and_normalize_experiments(
                 if not tool:
                     raise SourceValidationError(
                         f"{filename} row {row_number} tool must be a value or not_applicable"
+                    )
+                if _is_placeholder(tool):
+                    raise SourceValidationError(
+                        f"{filename} row {row_number} contains placeholder text at tool"
                     )
                 item["tool_label"] = "Not applicable" if tool == "not_applicable" else tool
                 occurred_at = _parse_timestamp(

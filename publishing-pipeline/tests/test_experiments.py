@@ -240,6 +240,35 @@ class ExperimentSourceTests(unittest.TestCase):
                 with self.assertRaisesRegex(SourceValidationError, "contains placeholder text"):
                     load_experiment_sources(self.input_dir)
 
+    def test_rejects_placeholder_in_optional_csv_notes(self) -> None:
+        path = self.input_dir / "experiment-evidence.csv"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                "Includes submission count and recovery timing",
+                "TBD",
+            ),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(SourceValidationError, "contains placeholder text at notes"):
+            load_experiment_sources(self.input_dir)
+
+    def test_rejects_invalid_evidence_id_format(self) -> None:
+        path = self.input_dir / "experiment-evidence.csv"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace("EV-0010", "EVIDENCE-1"),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(SourceValidationError, "evidence_id has invalid ID format"):
+            load_experiment_sources(self.input_dir)
+
+    def test_completed_next_actions_must_be_a_text_list(self) -> None:
+        self._write_run_change(lambda run: run.__setitem__("next_actions", "repeat later"))
+
+        with self.assertRaisesRegex(SourceValidationError, "next_actions must be a list"):
+            load_experiment_sources(self.input_dir)
+
 
 if __name__ == "__main__":
     unittest.main()

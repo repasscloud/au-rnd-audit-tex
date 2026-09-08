@@ -161,12 +161,14 @@ class PublisherTests(unittest.TestCase):
         self.assertIn("hypothesis remains unresolved", notebook)
         self.assertIn("Worker interruption test report", notebook)
         self.assertIn("Provider activity export", notebook)
+        self.assertIn("Australian research and development experimental record", notebook)
         for forbidden in (
             "Latency & {[value]}",
             "RUN-XXX",
             "Repeatable blank run pages",
             "Duplicate this section",
             "State what this run was intended to determine",
+            "Prepared by & [Name / Role]",
         ):
             self.assertNotIn(forbidden, notebook)
 

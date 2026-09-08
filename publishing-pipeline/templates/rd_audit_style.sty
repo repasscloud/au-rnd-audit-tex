@@ -101,6 +101,8 @@
 \newcommand{\RDPreparedBy}[1]{\def\@RDPreparedBy{#1}}
 \newcommand{\RDVersion}[1]{\def\@RDVersion{#1}}
 \newcommand{\RDConfidentiality}[1]{\def\@RDConfidentiality{#1}}
+\newcommand{\RDDocumentSubtitle}[1]{\def\@RDDocumentSubtitle{#1}}
+\newcommand{\RDPurposeText}[1]{\def\@RDPurposeText{#1}}
 
 \newcommand{\RDDefaultMeta}{%
   \RDDocumentTitle{R\&D Documentation}%
@@ -109,6 +111,8 @@
   \RDPreparedBy{<< document.prepared_by >>}%
   \RDVersion{<< document.version >>}%
   \RDConfidentiality{<< document.confidentiality >>}%
+  \RDDocumentSubtitle{Australian research and development documentation template}%
+  \RDPurposeText{This template is designed to support contemporaneous, technical, financial, and evidentiary records for Australian R\&D Tax Incentive claims. It is written to help maintain a clear audit trail from program-level uncertainty through to individual experiments, engineering effort, expenditure attribution, and claim-pack assembly.}%
 }
 \RDDefaultMeta
 
@@ -120,7 +124,7 @@
   \begin{flushleft}
     {\fontsize{24}{28}\selectfont\bfseries\color{RDNavy}\@RDDocumentTitle\par}
     \vspace{0.55cm}
-    {\large\color{RDInk}Australian research and development documentation template\par}
+    {\large\color{RDInk}\@RDDocumentSubtitle\par}
   \end{flushleft}
 
   \vspace{1.0cm}
@@ -145,7 +149,7 @@
   \noindent\colorbox{RDSoft}{%
     \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
       \textbf{Purpose}\par
-      This template is designed to support contemporaneous, technical, financial, and evidentiary records for Australian R\&D Tax Incentive claims. It is written to help maintain a clear audit trail from program-level uncertainty through to individual experiments, engineering effort, expenditure attribution, and claim-pack assembly.
+      \@RDPurposeText
     }%
   }
 
