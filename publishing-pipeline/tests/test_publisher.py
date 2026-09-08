@@ -47,12 +47,12 @@ class PublisherTests(unittest.TestCase):
     def test_rejects_duplicate_experiment_ids(self) -> None:
         experiments_path = self.input_dir / "experiments.yaml"
         experiments_path.write_text(
-            "experiments:\n  - id: RUN-001\n    title: First\n"
-            "  - id: RUN-001\n    title: Second\n",
+            "experiments:\n  - id: RUN-2026-001\n    title: First\n"
+            "  - id: RUN-2026-001\n    title: Second\n",
             encoding="utf-8",
         )
 
-        with self.assertRaisesRegex(SourceValidationError, "Duplicate experiment ID: RUN-001"):
+        with self.assertRaisesRegex(SourceValidationError, "Duplicate experiment ID: RUN-2026-001"):
             load_sources(self.input_dir)
 
     def test_rejects_invalid_timesheet_headers(self) -> None:
