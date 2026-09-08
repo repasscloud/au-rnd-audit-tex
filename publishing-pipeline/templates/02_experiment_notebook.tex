@@ -13,124 +13,134 @@
 \tableofcontents
 \clearpage
 
-\section{How to use this notebook}
-\RDSectionIntro{Create one section per independent run, test cycle, prototype iteration, benchmark round, or other discrete investigative step. The objective is to preserve the chronology of technical work and the logic of what was learned.}
+\section{Purpose and record integrity}
+\RDSectionIntro{This notebook presents the experimental runs supplied for the claim period in chronological order. Each run preserves its stated technical objective, pre-run hypothesis, method, observations, evaluation, conclusion, and supporting evidence references.}
 
-\RDAuditNote{Do not rewrite history after the fact. Where a hypothesis changes, record the original assumption, why it changed, and what new experiment followed. A notebook should show the actual progression of technical investigation.}
+\RDAuditNote{A recorded outcome may confirm, reject, partly support, or leave a hypothesis unresolved. The status describes the supplied experimental record and is not, by itself, a determination of R\&D eligibility.}
 
 \section{Notebook index}
+\small
 \rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.4cm}L{2.3cm}L{4.4cm}L{2.8cm}Y}
+\begin{xltabular}{\textwidth}{@{}L{2.6cm}L{2.2cm}Y L{2.0cm}L{3.0cm}@{}}
 \rowcolor{RDBand}
-\textbf{Run ID} & \textbf{Date} & \textbf{Experiment title} & \textbf{Outcome} & \textbf{Related project / uncertainty} \\
-RUN-001 & {[Date]} & {[Title]} & {Confirmed / Rejected / Mixed / Ongoing} & {[Project / UT-ID]} \\
-RUN-002 & {[Date]} & {[Title]} & {Confirmed / Rejected / Mixed / Ongoing} & {[Project / UT-ID]} \\
+\textbf{Run ID} & \textbf{Started} & \textbf{Experiment title} & \textbf{Outcome} & \textbf{Project / uncertainty} \\
+<% for experiment in experiments %>
+<< experiment.id >> & << experiment.started_date >> & << experiment.title >> & << experiment.status_label >> & << experiment.project_ref >> / << experiment.uncertainty_refs | join(', ') >> \\
+<% endfor %>
 \end{xltabular}
 \rowcolors{2}{}{}
+\normalsize
 
-\section{Audit-grade experiment run template}
+<% for experiment in experiments %>
+\clearpage
+\section{Experiment run << experiment.id >>}
+\RDCallout{Experiment title}{<< experiment.title >>}
+
 \subsection{Administrative details}
-Run ID: {[RUN-XXX]}\\
-Date or date range: {[Date range]}\\
-Engineer(s): {[Name(s)]}\\
-Project reference: {[Project ID / Name]}\\
-Uncertainty reference: {[UT-ID]}\\
-Supporting issue / ticket: {[ID]}\\
-Repo / branch / environment: {[Reference]}
+\begin{tabularx}{\textwidth}{@{}L{4.0cm}Y@{}}
+\textbf{Run ID} & << experiment.id >> \\
+\textbf{Started} & << experiment.started_display >> \\
+\textbf{Ended} & << experiment.ended_display >> \\
+\textbf{Outcome status} & << experiment.status_label >> \\
+\textbf{Project reference} & << experiment.project_ref >> \\
+\textbf{Uncertainty references} & << experiment.uncertainty_refs | join(', ') >> \\
+\textbf{Engineers} & <% for engineer in experiment.engineers %><< engineer.person_ref >> --- << engineer.role >><% if not loop.last %>; <% endif %><% endfor %> \\
+\end{tabularx}
 
 \subsection{Technical objective}
-State what this run was intended to determine.
+<< experiment.objective >>
 
 \subsection{Background}
-\RaggedRight
-Summarise the prior system state, constraints, assumptions, and why this run was necessary.\par
-\justifying
+<< experiment.background.summary >>
+
+\textbf{Background evidence:} << experiment.background.research_refs | join(', ') >>
 
 \subsection{Hypothesis}
-Write the testable expectation in direct technical terms.
+<< experiment.hypothesis.statement >>
+
+\textbf{Formed at:} << experiment.hypothesis.formed_at_display >>\\
+\textbf{Basis evidence:} << experiment.hypothesis.basis_refs | join(', ') >>
 
 \subsection{Variables and conditions}
-\begin{RDChecklist}
-\item Inputs or datasets used.
-\item Environment or infrastructure configuration.
-\item Control condition or baseline.
-\item Load, concurrency, payload, or data-volume assumptions.
-\item Acceptance thresholds and failure triggers.
-\end{RDChecklist}
+<% for design_section in experiment.design_sections %>
+\subsubsection{<< design_section.label >>}
+<% if design_section.is_not_applicable %>
+\RDNotApplicable{<< design_section.reason >>}
+<% else %>
+\begin{itemize}
+<% for item in design_section['items'] %>
+\item << item >>
+<% endfor %>
+\end{itemize}
+<% endif %>
+<% endfor %>
 
 \subsection{Method}
-Describe the exact method used. Include the implementation approach, instrumentation, build version, and any benchmarking or observation steps.
+<< experiment.method >>
 
 \subsection{Execution log}
+\small
 \rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.4cm}L{2.4cm}Y}
+\noindent\begin{xltabular}{\textwidth}{@{}L{3.2cm}L{1.5cm}L{1.7cm}L{2.7cm}Y L{1.4cm}@{}}
 \rowcolor{RDBand}
-\textbf{Timestamp / step} & \textbf{Actor / tool} & \textbf{Action / observation} \\
-{[Time]} & {[Engineer / script / service]} & {[What happened]} \\
-{[Time]} & {[Engineer / script / service]} & {[What happened]} \\
+\textbf{Occurred at} & \textbf{Actor} & \textbf{Tool} & \textbf{Action} & \textbf{Observation} & \textbf{Evidence} \\
+<% for entry in experiment.execution_log %>
+<< entry.occurred_at_display >> & << entry.actor >> & << entry.tool_label >> & << entry.action >> & << entry.observation >> & << entry.evidence_ref >> \\
+<% endfor %>
 \end{xltabular}
 \rowcolors{2}{}{}
+\normalsize
 
-\subsection{Results}
+\subsection{Results and observations}
+\small
 \rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{3.8cm}C{2.6cm}C{2.6cm}Y}
+\begin{xltabular}{\textwidth}{@{}L{1.6cm}L{2.3cm}L{1.5cm}L{1.5cm}L{1.3cm}Y L{1.5cm}@{}}
 \rowcolor{RDBand}
-\textbf{Metric} & \textbf{Baseline} & \textbf{Experiment} & \textbf{Notes} \\
-Latency & {[value]} & {[value]} & {[Observation]} \\
-Throughput & {[value]} & {[value]} & {[Observation]} \\
-Error rate & {[value]} & {[value]} & {[Observation]} \\
-Resource usage & {[value]} & {[value]} & {[Observation]} \\
+\textbf{Kind} & \textbf{Metric / observation} & \textbf{Baseline} & \textbf{Observed} & \textbf{Unit} & \textbf{Notes} & \textbf{Evidence} \\
+<% for result in experiment.results %>
+<< result.kind_label >> & << result.metric >> & << result.baseline_label >> & << result.observed_value >> & << result.unit_label >> & << result.notes >> & << result.evidence_ref >> \\
+<% endfor %>
 \end{xltabular}
 \rowcolors{2}{}{}
+\normalsize
 
 \subsection{Unexpected behaviour or failure modes}
-Record any non-obvious outcomes, regressions, data anomalies, or side effects.
+<% if experiment.unexpected_behaviour.has_data %>
+<< experiment.unexpected_behaviour.content >>
+<% else %>
+\RDNoData
+<% endif %>
 
-\subsection{Interpretation}
-Explain what the result means technically. Distinguish measured fact from engineering inference.
+\subsection{Evaluation}
+<< experiment.evaluation >>
 
-\subsection{Conclusion}
-State whether the hypothesis was confirmed, rejected, or left unresolved.
+\subsection{<< experiment.conclusion_label >>}
+<< experiment.conclusion_text >>
 
-\subsection{Next action}
-Specify the follow-up experiment, design change, additional instrumentation, or decision triggered by this run.
+\subsection{Next actions}
+<% if experiment.get('next_actions', []) %>
+\begin{itemize}
+<% for action in experiment.next_actions %>
+\item << action >>
+<% endfor %>
+\end{itemize}
+<% else %>
+\RDNoData
+<% endif %>
 
 \subsection{Evidence attachments}
-\begin{RDChecklist}
-\item Commit references.
-\item Benchmark exports.
-\item Logs or screenshots.
-\item Diagram revision references.
-\item PR, ticket, or release references.
-\end{RDChecklist}
-
-\clearpage
-\section{Repeatable blank run pages}
-\subsection{Blank experiment run page}
-\RDCallout{Use}{Duplicate this section for each independent run or move it into a separate run-specific file if a project generates heavy volume.}
-
-Run ID: \rule{5cm}{0.4pt}\\[0.15cm]
-Date or range: \rule{5cm}{0.4pt}\\[0.15cm]
-Engineer(s): \rule{8cm}{0.4pt}\\[0.15cm]
-Project / uncertainty ref: \rule{8cm}{0.4pt}
-
-\subsubsection{Technical objective}
-\vspace{2.3cm}
-
-\subsubsection{Background}
-\vspace{3.0cm}
-
-\subsubsection{Hypothesis}
-\vspace{1.8cm}
-
-\subsubsection{Method}
-\vspace{4.5cm}
-
-\subsubsection{Results and observations}
-\vspace{5.5cm}
-
-\subsubsection{Conclusion and next action}
-\vspace{3.2cm}
+\small
+\rowcolors{2}{white}{RDSoft}
+\noindent\begin{xltabular}{\textwidth}{@{}L{1.5cm}L{1.7cm}L{2.6cm}Y L{3.2cm}@{}}
+\rowcolor{RDBand}
+\textbf{Evidence ID} & \textbf{Type} & \textbf{Title} & \textbf{Location} & \textbf{Captured at / notes} \\
+<% for record in experiment.evidence %>
+<< record.evidence_id >> & << record.type >> & << record.title >> & << record.location >> & << record.captured_at_display >><% if record.notes %> --- << record.notes >><% else %> --- No data provided.<% endif %> \\
+<% endfor %>
+\end{xltabular}
+\rowcolors{2}{}{}
+\normalsize
+<% endfor %>
 
 \RDEndMatter
 \end{document}

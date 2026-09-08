@@ -51,6 +51,13 @@ DESIGN_FIELDS = (
     "acceptance_criteria",
     "failure_triggers",
 )
+DESIGN_LABELS = {
+    "independent_variables": "Independent variables",
+    "controlled_variables": "Controlled variables",
+    "observed_variables": "Observed variables",
+    "acceptance_criteria": "Acceptance criteria",
+    "failure_triggers": "Failure triggers",
+}
 PLACEHOLDER_PATTERN = re.compile(r"(?:\[[^\]]+\]|xxx|tbd)", re.IGNORECASE)
 RUN_ID_PATTERN = re.compile(r"RUN-\d{4}-\d{3}")
 PROJECT_ID_PATTERN = re.compile(r"RND-\d{4}-\d{2}")
@@ -72,6 +79,13 @@ def _parse_timestamp(value: Any, *, source: str, field: str) -> datetime:
     if parsed.tzinfo is None:
         raise SourceValidationError(f"{source} {field} must include a UTC offset")
     return parsed
+
+
+def _display_timestamp(value: datetime) -> str:
+    offset = value.strftime("%z")
+    if offset:
+        offset = f"{offset[:3]}:{offset[3:]}"
+    return f"{value.strftime('%d %b %Y, %H:%M')} {offset}".strip()
 
 
 def _nested_value(mapping: dict[str, Any], path: str) -> Any:
@@ -326,11 +340,42 @@ def validate_and_normalize_experiments(
         run = deepcopy(experiment)
         run["_started_at"] = started_at
         run["_ended_at"] = ended_at
-        run["unexpected_behaviour"] = _validate_optional_block(
+        run["started_date"] = experiment["started_at"].split("T", 1)[0]
+        run["started_display"] = _display_timestamp(started_at)
+        run["ended_display"] = _display_timestamp(ended_at) if ended_at else "Ongoing"
+        run["hypothesis"]["formed_at_display"] = _display_timestamp(formed_at)
+        run["is_ongoing"] = status == "ongoing"
+        run["status_label"] = status.replace("_", " ").title()
+        run["conclusion_label"] = "Interim conclusion" if status == "ongoing" else "Conclusion"
+        run["conclusion_text"] = (
+            experiment["interim_conclusion"] if status == "ongoing" else experiment["conclusion"]
+        )
+        run["design_sections"] = []
+        for field in DESIGN_FIELDS:
+            design_value = experiment["design"][field]
+            if isinstance(design_value, list):
+                run["design_sections"].append(
+                    {
+                        "label": DESIGN_LABELS[field],
+                        "is_not_applicable": False,
+                        "items": design_value,
+                    }
+                )
+            else:
+                run["design_sections"].append(
+                    {
+                        "label": DESIGN_LABELS[field],
+                        "is_not_applicable": True,
+                        "reason": design_value["reason"],
+                    }
+                )
+        optional_block = _validate_optional_block(
             run_id,
             "unexpected_behaviour",
             experiment.get("unexpected_behaviour"),
         )
+        optional_block["has_data"] = optional_block["state"] == "provided"
+        run["unexpected_behaviour"] = optional_block
         run["results"] = []
         run["execution_log"] = []
         run["evidence"] = []
@@ -350,12 +395,13 @@ def validate_and_normalize_experiments(
             raise SourceValidationError(f"Duplicate evidence ID: {evidence_id}")
         for field in ("type", "title", "location", "captured_at"):
             _required_row_text(filename, row_number, row, field)
-        _parse_timestamp(
+        captured_at = _parse_timestamp(
             row["captured_at"],
             source=f"{filename} row {row_number}",
             field="captured_at",
         )
         item = dict(row)
+        item["captured_at_display"] = _display_timestamp(captured_at)
         item["notes"] = row["notes"].strip()
         by_id[run_id]["evidence"].append(item)
         evidence_index[evidence_id] = (run_id, row_number)
@@ -410,6 +456,17 @@ def validate_and_normalize_experiments(
                         f"{filename} row {row_number} baseline_value not_applicable requires explanatory notes"
                     )
                 _required_row_text(filename, row_number, row, "notes")
+                item["kind_label"] = kind.title()
+                item["baseline_label"] = (
+                    "Not applicable"
+                    if row["baseline_value"].strip() == "not_applicable"
+                    else row["baseline_value"].strip()
+                )
+                item["unit_label"] = (
+                    "Not applicable"
+                    if item["unit"].strip() == "not_applicable"
+                    else item["unit"].strip()
+                )
             else:
                 for field in ("occurred_at", "actor", "action", "observation"):
                     _required_row_text(filename, row_number, row, field)
@@ -418,12 +475,14 @@ def validate_and_normalize_experiments(
                     raise SourceValidationError(
                         f"{filename} row {row_number} tool must be a value or not_applicable"
                     )
+                item["tool_label"] = "Not applicable" if tool == "not_applicable" else tool
                 occurred_at = _parse_timestamp(
                     row["occurred_at"],
                     source=f"{filename} row {row_number}",
                     field="occurred_at",
                 )
                 run = by_id[run_id]
+                item["occurred_at_display"] = _display_timestamp(occurred_at)
                 if occurred_at < run["_started_at"] or (
                     run["_ended_at"] is not None and occurred_at > run["_ended_at"]
                 ):

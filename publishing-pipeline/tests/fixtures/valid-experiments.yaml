@@ -23,7 +23,8 @@ experiments:
       independent_variables:
         - provider activity response
       controlled_variables:
-        - unchanged build and test tenant
+        state: not_applicable
+        reason: No controlled variable was available because the run observed an external provider state.
       observed_variables:
         - terminal recovery decision
       acceptance_criteria:

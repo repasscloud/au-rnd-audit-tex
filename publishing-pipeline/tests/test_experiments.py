@@ -216,7 +216,10 @@ class ExperimentSourceTests(unittest.TestCase):
 
         runs = load_experiment_sources(self.input_dir)
 
-        self.assertEqual(runs[0]["unexpected_behaviour"], {"state": "no_data"})
+        self.assertEqual(
+            runs[0]["unexpected_behaviour"],
+            {"state": "no_data", "has_data": False},
+        )
 
     def test_rejects_invalid_optional_block(self) -> None:
         cases = (

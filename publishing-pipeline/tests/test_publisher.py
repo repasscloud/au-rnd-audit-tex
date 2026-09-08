@@ -129,6 +129,46 @@ class PublisherTests(unittest.TestCase):
         self.assertIn("GENERATED FILE", overview)
         self.assertTrue((output_dir / "rd_audit_style.sty").is_file())
 
+    def test_renders_dynamic_experiments_in_chronological_order(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        notebook = (output_dir / "02_experiment_notebook.tex").read_text(encoding="utf-8")
+        first_position = notebook.index("RUN-2026-001")
+        second_position = notebook.index("RUN-2026-002")
+        self.assertLess(first_position, second_position)
+        self.assertIn("provider submissions", notebook)
+        self.assertIn("terminal recovery decision", notebook)
+        self.assertIn("Recovery preserved queued work", notebook)
+        self.assertIn("hypothesis remains unresolved", notebook)
+        self.assertIn("Worker interruption test report", notebook)
+        self.assertIn("Provider activity export", notebook)
+        for forbidden in (
+            "Latency & {[value]}",
+            "RUN-XXX",
+            "Repeatable blank run pages",
+            "Duplicate this section",
+            "State what this run was intended to determine",
+        ):
+            self.assertNotIn(forbidden, notebook)
+
+    def test_renders_explicit_optional_and_conditional_absence(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        notebook = (output_dir / "02_experiment_notebook.tex").read_text(encoding="utf-8")
+        style = (output_dir / "rd_audit_style.sty").read_text(encoding="utf-8")
+        self.assertIn(r"\RDNoData", notebook)
+        self.assertIn("No data provided.", style)
+        self.assertIn(
+            "No controlled variable was available because the run observed an external provider state.",
+            notebook,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
