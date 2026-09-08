@@ -1,3 +1,83 @@
 experiments:
-  - id: RUN-001
-    title: Example throughput investigation
+  - id: RUN-2026-002
+    title: Evaluate recovery decision under ambiguous provider state
+    project_ref: RND-2026-01
+    uncertainty_refs:
+      - UT-01
+    started_at: 2026-07-15T09:00:00+09:30
+    status: ongoing
+    engineers:
+      - person_ref: P-002
+        role: observer
+    objective: Determine whether an ambiguous provider state can be resolved automatically.
+    background:
+      summary: The preceding run exposed a state that could not be classified from local records alone.
+      research_refs:
+        - EV-0020
+    hypothesis:
+      statement: Provider activity will resolve the ambiguous state within the observation window.
+      formed_at: 2026-07-14T16:30:00+09:30
+      basis_refs:
+        - EV-0020
+    design:
+      independent_variables:
+        - provider activity response
+      controlled_variables:
+        - unchanged build and test tenant
+      observed_variables:
+        - terminal recovery decision
+      acceptance_criteria:
+        - an evidence-backed terminal decision is recorded
+      failure_triggers:
+        - the observation window closes without decisive evidence
+    method: Poll provider activity at fixed intervals and compare it with the durable local operation state.
+    evaluation: The observations remain insufficient to make an automatic terminal decision.
+    interim_conclusion: The hypothesis remains unresolved while the provider state is ambiguous.
+    next_actions:
+      - Extend observation using a provider capability that exposes idempotent acceptance.
+    unexpected_behaviour:
+      state: no_data
+  - id: RUN-2026-001
+    title: Evaluate queue recovery after worker interruption
+    project_ref: RND-2026-01
+    uncertainty_refs:
+      - UT-01
+    started_at: 2026-07-14T09:30:00+09:30
+    ended_at: 2026-07-14T12:10:00+09:30
+    status: mixed
+    engineers:
+      - person_ref: P-001
+        role: experiment lead
+    objective: Determine whether interrupted deliveries resume without duplication.
+    background:
+      summary: The prototype persisted work state but recovery behavior under process loss was unknown.
+      research_refs:
+        - EV-0010
+    hypothesis:
+      statement: Persisting the operation identifier before dispatch will allow restart without a second provider submission.
+      formed_at: 2026-07-13T16:20:00+09:30
+      basis_refs:
+        - EV-0010
+    design:
+      independent_variables:
+        - worker interruption point
+      controlled_variables:
+        - build version 2026.07.14.1
+        - single test tenant
+      observed_variables:
+        - provider submission count
+        - recovery duration
+      acceptance_criteria:
+        - one provider submission
+        - durable terminal state
+      failure_triggers:
+        - duplicate provider submission
+        - lost queued record
+    method: Run each defined interruption point against an isolated test queue and reconcile persisted and provider states.
+    evaluation: Recovery preserved queued work, but one interruption window remained ambiguous.
+    conclusion: The hypothesis was partly supported because durable recovery worked while one acceptance window remained unresolved.
+    next_actions:
+      - Test a provider capability with idempotent acceptance semantics.
+    unexpected_behaviour:
+      state: provided
+      content: Provider activity lagged the local terminal state.

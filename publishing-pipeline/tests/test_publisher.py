@@ -29,7 +29,7 @@ class PublisherTests(unittest.TestCase):
         sources = load_sources(self.input_dir)
 
         self.assertEqual(sources["document"]["company"], "Example Research Pty Ltd")
-        self.assertEqual(sources["experiments"][0]["id"], "RUN-001")
+        self.assertEqual(sources["experiments"][0]["id"], "RUN-2026-001")
         self.assertEqual(sources["timesheets"][0]["category"], "core")
         self.assertEqual(sources["infrastructure_costs"][0]["eligible_amount"], "50.00")
 

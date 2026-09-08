@@ -1,19 +1,16 @@
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from datetime import date
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 from typing import Any
 
-import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-
-class SourceValidationError(ValueError):
-    """Raised when publishing input does not satisfy the baseline contract."""
+from experiments import load_experiment_sources
+from validation import SourceValidationError, load_strict_csv, load_yaml_mapping
 
 
 REQUIRED_DOCUMENT_FIELDS = (
@@ -50,34 +47,6 @@ CSV_SCHEMAS = {
         "evidence_ref",
     ),
 }
-
-
-def _load_yaml(path: Path) -> dict[str, Any]:
-    if not path.is_file():
-        raise SourceValidationError(f"Missing required source file: {path.name}")
-    try:
-        value = yaml.load(path.read_text(encoding="utf-8"), Loader=yaml.BaseLoader)
-    except (OSError, UnicodeError, yaml.YAMLError) as error:
-        raise SourceValidationError(f"Cannot read {path.name}: {error}") from error
-    if not isinstance(value, dict):
-        raise SourceValidationError(f"{path.name} must contain a YAML mapping")
-    return value
-
-
-def _load_csv(path: Path, required_headers: tuple[str, ...]) -> list[dict[str, str]]:
-    if not path.is_file():
-        raise SourceValidationError(f"Missing required source file: {path.name}")
-    try:
-        with path.open(encoding="utf-8", newline="") as stream:
-            reader = csv.DictReader(stream)
-            actual_headers = tuple(reader.fieldnames or ())
-            if actual_headers != required_headers:
-                raise SourceValidationError(
-                    f"Invalid {path.name} headers. Expected: {','.join(required_headers)}"
-                )
-            return list(reader)
-    except (OSError, UnicodeError, csv.Error) as error:
-        raise SourceValidationError(f"Cannot read {path.name}: {error}") from error
 
 
 def _required_row_values(filename: str, row_number: int, row: dict[str, str]) -> None:
@@ -136,7 +105,7 @@ def _validate_infrastructure_costs(rows: list[dict[str, str]]) -> None:
 
 
 def load_sources(input_dir: Path) -> dict[str, Any]:
-    claim = _load_yaml(input_dir / "claim.yaml")
+    claim = load_yaml_mapping(input_dir / "claim.yaml")
     document = claim.get("document")
     if not isinstance(document, dict):
         raise SourceValidationError("claim.yaml requires a document mapping")
@@ -145,25 +114,10 @@ def load_sources(input_dir: Path) -> dict[str, Any]:
         if not isinstance(value, str) or not value.strip():
             raise SourceValidationError(f"Missing required document field: {field}")
 
-    experiment_source = _load_yaml(input_dir / "experiments.yaml")
-    experiments = experiment_source.get("experiments")
-    if not isinstance(experiments, list):
-        raise SourceValidationError("experiments.yaml requires an experiments list")
-    seen_ids: set[str] = set()
-    for experiment in experiments:
-        if not isinstance(experiment, dict):
-            raise SourceValidationError("Each experiment must be a mapping")
-        experiment_id = experiment.get("id")
-        if not isinstance(experiment_id, str) or not experiment_id.strip():
-            raise SourceValidationError("Each experiment requires a non-empty id")
-        if experiment_id in seen_ids:
-            raise SourceValidationError(f"Duplicate experiment ID: {experiment_id}")
-        seen_ids.add(experiment_id)
-
     sources: dict[str, Any] = dict(claim)
-    sources["experiments"] = experiments
-    timesheets = _load_csv(input_dir / "timesheets.csv", CSV_SCHEMAS["timesheets.csv"])
-    infrastructure_costs = _load_csv(
+    sources["experiments"] = load_experiment_sources(input_dir)
+    timesheets = load_strict_csv(input_dir / "timesheets.csv", CSV_SCHEMAS["timesheets.csv"])
+    infrastructure_costs = load_strict_csv(
         input_dir / "infrastructure-costs.csv",
         CSV_SCHEMAS["infrastructure-costs.csv"],
     )
