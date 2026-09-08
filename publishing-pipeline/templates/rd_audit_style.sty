@@ -1,0 +1,239 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{rd_audit_style}[2026/03/10 R&D audit documentation style]
+
+\RequirePackage[margin=1in]{geometry}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{hyperref}
+\RequirePackage{enumitem}
+\RequirePackage{titlesec}
+\RequirePackage{parskip}
+\RequirePackage{helvet}
+\RequirePackage{longtable}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{xltabular}
+\RequirePackage{array}
+\RequirePackage{fancyhdr}
+\RequirePackage{tocloft}
+\RequirePackage[table]{xcolor}
+\RequirePackage{colortbl}
+\RequirePackage{multirow}
+\RequirePackage{makecell}
+\RequirePackage{graphicx}
+\RequirePackage{listings}
+
+\RequirePackage{lastpage}
+\RequirePackage{etoolbox}
+\RequirePackage{needspace}
+\RequirePackage{setspace}
+\RequirePackage{ifthen}
+\RequirePackage{calc}
+\RequirePackage{ragged2e}
+\RequirePackage{amssymb}
+
+\renewcommand{\familydefault}{\sfdefault}
+\hyphenpenalty=500
+\exhyphenpenalty=500
+\emergencystretch=1.5em
+\setstretch{1.06}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=1.5em,itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=3pt,topsep=4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{7pt}
+
+\definecolor{RDNavy}{HTML}{17324D}
+\definecolor{RDBlue}{HTML}{305F86}
+\definecolor{RDInk}{HTML}{243240}
+\definecolor{RDLine}{HTML}{D8E0E8}
+\definecolor{RDBand}{HTML}{EFF4F8}
+\definecolor{RDSoft}{HTML}{F8FAFC}
+\definecolor{RDWarn}{HTML}{FFF7E6}
+\definecolor{RDWarnLine}{HTML}{E5B14C}
+\definecolor{RDGood}{HTML}{EDF8F0}
+\definecolor{RDGoodLine}{HTML}{6AA676}
+
+\lstset{
+  basicstyle=\small\ttfamily,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=RDBlue,
+  urlcolor=RDBlue,
+  citecolor=RDBlue,
+  pdftitle={R&D Audit Documentation},
+  pdfauthor={OpenAI}
+}
+
+\titleformat{\section}{\Large\bfseries\color{RDNavy}}{\thesection.}{0.55em}{}
+\titleformat{\subsection}{\large\bfseries\color{RDInk}}{\thesubsection}{0.55em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{RDInk}}{\thesubsubsection}{0.55em}{}
+\titlespacing*{\section}{0pt}{1.0em}{0.45em}
+\titlespacing*{\subsection}{0pt}{0.9em}{0.35em}
+\titlespacing*{\subsubsection}{0pt}{0.8em}{0.25em}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash\hspace{0pt}}X}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\RaggedLeft\arraybackslash\hspace{0pt}}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{RDNavy}{R\&D Audit Documentation}}
+\rhead{\textcolor{RDNavy}{\small \leftmark}}
+\cfoot{\textcolor{RDInk}{\thepage\ of \pageref{LastPage}}}
+\setlength{\headheight}{15pt}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\RDDocumentTitle}[1]{\def\@RDDocumentTitle{#1}}
+\newcommand{\RDCompany}[1]{\def\@RDCompany{#1}}
+\newcommand{\RDFY}[1]{\def\@RDFY{#1}}
+\newcommand{\RDPreparedBy}[1]{\def\@RDPreparedBy{#1}}
+\newcommand{\RDVersion}[1]{\def\@RDVersion{#1}}
+\newcommand{\RDConfidentiality}[1]{\def\@RDConfidentiality{#1}}
+
+\newcommand{\RDDefaultMeta}{%
+  \RDDocumentTitle{R\&D Documentation}%
+  \RDCompany{<< document.company >>}%
+  \RDFY{<< document.financial_year >>}%
+  \RDPreparedBy{<< document.prepared_by >>}%
+  \RDVersion{<< document.version >>}%
+  \RDConfidentiality{<< document.confidentiality >>}%
+}
+\RDDefaultMeta
+
+\newcommand{\RDTitlePage}{%
+  \thispagestyle{empty}
+  \begingroup
+  \sloppy
+
+  \begin{flushleft}
+    {\fontsize{24}{28}\selectfont\bfseries\color{RDNavy}\@RDDocumentTitle\par}
+    \vspace{0.55cm}
+    {\large\color{RDInk}Australian research and development documentation template\par}
+  \end{flushleft}
+
+  \vspace{1.0cm}
+
+  \noindent\colorbox{RDBand}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+      \vspace{0.2cm}
+      \begin{tabularx}{\linewidth}{@{}L{3.2cm}Y@{}}
+      \textbf{Company} & \@RDCompany \\
+      \textbf{Financial year} & \@RDFY \\
+      \textbf{Prepared by} & \@RDPreparedBy \\
+      \textbf{Version} & \@RDVersion \\
+      \textbf{Classification} & \@RDConfidentiality \\
+      \textbf{Generated} & \today \\
+      \end{tabularx}
+      \vspace{0.2cm}
+    }%
+  }
+
+  \vfill
+
+  \noindent\colorbox{RDSoft}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+      \textbf{Purpose}\par
+      This template is designed to support contemporaneous, technical, financial, and evidentiary records for Australian R\&D Tax Incentive claims. It is written to help maintain a clear audit trail from program-level uncertainty through to individual experiments, engineering effort, expenditure attribution, and claim-pack assembly.
+    }%
+  }
+
+  \vfill
+  \endgroup
+  \clearpage
+}
+
+\newcommand{\RDMetaTable}{%
+  \rowcolors{2}{white}{RDSoft}
+  \begin{tabularx}{\textwidth}{L{4.0cm}Y}
+  \rowcolor{RDBand}
+  \textbf{Field} & \textbf{Entry} \\
+  Company & << document.company >> \\
+  ABN & << document.abn >> \\
+  Financial year & << document.financial_year >> \\
+  Program / project & << document.program >> \\
+  Document owner & << document.owner >> \\
+  Review date & << document.review_date >> \\
+  Evidence repository path & << document.evidence_repository >> \\
+  \end{tabularx}
+  \rowcolors{2}{}{}
+}
+
+\newcommand{\RDCallout}[2]{%
+  \vspace{0.25em}
+  \noindent\fcolorbox{RDLine}{RDSoft}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+      \textbf{#1}\par #2
+    }%
+  }
+  \vspace{0.45em}
+}
+
+\newcommand{\RDAuditNote}[1]{%
+  \vspace{0.25em}
+  \noindent\fcolorbox{RDWarnLine}{RDWarn}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+      \textbf{Audit note}\par #1
+    }%
+  }
+  \vspace{0.45em}
+}
+
+\newcommand{\RDGoodPractice}[1]{%
+  \vspace{0.25em}
+  \noindent\fcolorbox{RDGoodLine}{RDGood}{%
+    \parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+      \textbf{Good record-keeping practice}\par #1
+    }%
+  }
+  \vspace{0.45em}
+}
+
+\newenvironment{RDChecklist}{\begin{itemize}[leftmargin=1.4em,label=\textcolor{RDBlue}{$\square$}]}{\end{itemize}}
+
+\newcommand{\RDPlaceholderTable}[2]{%
+  \rowcolors{2}{white}{RDSoft}
+  \begin{tabularx}{\textwidth}{#1}
+  #2
+  \end{tabularx}
+  \rowcolors{2}{}{}
+}
+
+\newcommand{\RDSectionIntro}[1]{\noindent\textcolor{RDInk}{#1}\par\vspace{0.25em}}
+
+\newcommand{\RDGitImportBlock}[2]{%
+\subsection{#1}
+\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
+\begin{lstlisting}
+## Example export command
+## git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" \
+##   --date=short --pretty=format:"%h | %ad | %an | %d | %s" > #2
+\end{lstlisting}
+\IfFileExists{#2}{\lstinputlisting{#2}}{\RDCallout{Pending evidence import}{Expected git evidence file: \texttt{#2}}}
+}
+
+\newcommand{\RDEndMatter}{%
+  \clearpage
+  \section*{Document control}
+  \addcontentsline{toc}{section}{Document control}
+  \RDMetaTable
+  \vspace{0.4cm}
+  \begin{tabularx}{\textwidth}{L{4cm}Y}
+  Prepared by & [Name / Role] \\
+  Reviewed by & [Name / Role] \\
+  Approved by & [Name / Role] \\
+  Approval date & [Date] \\
+  Version notes & [Summary of changes] \\
+  \end{tabularx}
+}

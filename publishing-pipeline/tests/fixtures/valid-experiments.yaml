@@ -1,0 +1,3 @@
+experiments:
+  - id: RUN-001
+    title: Example throughput investigation

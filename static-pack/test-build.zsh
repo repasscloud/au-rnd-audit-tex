@@ -8,7 +8,8 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   exit 1
 fi
 
-tex_files=(./*.tex)
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+tex_files=("$script_dir"/*.tex)
 if (( ${#tex_files[@]} == 0 )); then
   echo "No .tex files found." >&2
   exit 1
@@ -17,7 +18,7 @@ fi
 for f in "${tex_files[@]}"; do
   echo "Compiling $f"
   build_log="$(mktemp)"
-  if ! tectonic "$f" >"$build_log" 2>&1; then
+  if ! tectonic --outdir "$script_dir" "$f" >"$build_log" 2>&1; then
     cat "$build_log" >&2
     rm -f "$build_log"
     exit 1

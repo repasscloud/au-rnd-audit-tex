@@ -1,0 +1,11 @@
+document:
+  company: "[Company Name]"
+  abn: "[ABN]"
+  financial_year: "[YYYY-YYYY]"
+  program: "[Program or Project Name]"
+  prepared_by: "[Prepared By / Role]"
+  version: "v1.0"
+  confidentiality: "Internal / Commercial-in-Confidence"
+  owner: "[Name / Role]"
+  review_date: "[Date]"
+  evidence_repository: "[Repository / Share / Folder]"

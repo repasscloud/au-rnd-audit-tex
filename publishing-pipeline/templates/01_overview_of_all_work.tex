@@ -1,0 +1,183 @@
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{R\&D Program Overview and Annual Technical Record}
+\RDCompany{<< document.company >>}
+\RDFY{<< document.financial_year >>}
+\RDPreparedBy{<< document.prepared_by >>}
+\RDVersion{<< document.version >>}
+\RDConfidentiality{<< document.confidentiality >>}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{Purpose of this document}
+\RDSectionIntro{This is the program-level overview document. It should read as the authoritative summary of the full year of work, while the independent experiment runs, working papers, time records, infrastructure worksheets, and git evidence appendices operate as supporting background records.}
+
+\RDAuditNote{This document should not be a marketing narrative. It should state the actual technical problem, why existing knowledge was insufficient, what was attempted, what evidence exists, and how the program-level claim maps to underlying records.}
+
+\section{Program profile}
+\RDMetaTable
+
+\subsection{Product or platform}
+Describe the software product, subsystem, service, or platform being developed. Identify the commercial context without overstating certainty, novelty, or business outcomes.
+
+\subsection{Program objective}
+State the overall technical objective. Focus on the engineering capability sought, not merely the feature list.
+
+\subsection{Commercial context}
+Summarise the market requirement, delivery constraints, performance expectations, and why the work mattered commercially.
+
+\section{Technical state of the art before the program}
+Describe the baseline technical knowledge and known approaches available before commencing the relevant activities.
+
+\begin{RDChecklist}
+\item Existing architectures, frameworks, or vendor solutions reviewed.
+\item Constraints of conventional implementation patterns.
+\item Prior internal versions, prototypes, or failed attempts.
+\item Third-party limits that prevented straightforward implementation.
+\item Relevant standards, protocol assumptions, or documented platform limits.
+\end{RDChecklist}
+
+\section{Program-level technical uncertainty}
+\RDSectionIntro{Document the specific matters that could not be resolved by competent professionals using standard knowledge at the outset.}
+
+\subsection{Uncertainty statement template}
+\RDCallout{Template}{It was uncertain whether [technical approach] could achieve [required result] under [defined operating conditions or constraints] without causing [specific adverse outcome].}
+
+\subsection{Uncertainty register}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.6cm}L{4.1cm}Y}
+\rowcolor{RDBand}
+\textbf{ID} & \textbf{Area} & \textbf{Uncertainty description} \\
+UT-01 & Architecture & {[Describe the technical unknown.]} \\
+UT-02 & Performance & {[Describe the technical unknown.]} \\
+UT-03 & Data / integration & {[Describe the technical unknown.]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Program structure}
+\RDSectionIntro{Break the annual program into projects, streams, or work packages so an auditor can trace the path from uncertainty to experiment to expenditure.}
+
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.7cm}L{4.5cm}L{2.8cm}Y}
+\rowcolor{RDBand}
+\textbf{Project ID} & \textbf{Project name} & \textbf{Period} & \textbf{Technical focus} \\
+RND-2026-01 & {[Project name]} & {[Date range]} & {[Core technical focus]} \\
+RND-2026-02 & {[Project name]} & {[Date range]} & {[Core technical focus]} \\
+RND-2026-03 & {[Project name]} & {[Date range]} & {[Core technical focus]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Project narrative template}
+\subsection{Project identification}
+Project ID: {[ID]}\\
+Project name: {[Name]}\\
+Responsible lead: {[Name / Role]}\\
+Relevant repositories: {[Repo / branch / path]}\\
+Related notebook references: {[Notebook IDs]}
+
+\subsection{Business objective}
+Explain the intended commercial or operational result.
+
+\subsection{Technical problem}
+\RaggedRight
+Describe the concrete engineering constraint, failure mode, scalability issue, architectural limitation, or systems behaviour problem.\par
+\justifying
+
+\subsection{Hypothesis}
+State the testable proposition used to guide the experimental work.
+
+\subsection{Experimental strategy}
+Describe how the team intended to test the uncertainty, what variables mattered, and which measurable criteria would be used.
+
+\subsection{Outcome summary}
+Summarise whether the hypothesis was confirmed, rejected, or only partially resolved.
+
+\section{Annual experiment summary register}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.1cm}L{2.4cm}L{3.1cm}L{2.5cm}Y}
+\rowcolor{RDBand}
+\textbf{Run ID} & \textbf{Date} & \textbf{Project} & \textbf{Outcome} & \textbf{Reference to detailed notebook} \\
+RUN-001 & {[Date]} & {[Project name]} & Confirmed / Rejected / Further work & {[Notebook ref]} \\
+RUN-002 & {[Date]} & {[Project name]} & Confirmed / Rejected / Further work & {[Notebook ref]} \\
+RUN-003 & {[Date]} & {[Project name]} & Confirmed / Rejected / Further work & {[Notebook ref]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Personnel and role allocation}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.5cm}L{3cm}L{3cm}Y}
+\rowcolor{RDBand}
+\textbf{Name} & \textbf{Role} & \textbf{R\&D allocation} & \textbf{Relevant activity areas} \\
+{[Name]} & {[Role]} & {[\%]} & {[Architecture / coding / testing / analysis / DevOps]} \\
+{[Name]} & {[Role]} & {[\%]} & {[Architecture / coding / testing / analysis / DevOps]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Source code and engineering evidence}
+\begin{RDChecklist}
+\item Repository names and URLs.
+\item Commit ranges for each relevant period.
+\item Pull requests or merge references.
+\item Issue, task, or ticket references where available.
+\item Build logs, benchmark outputs, profiling results, screenshots, or architecture diagrams.
+\end{RDChecklist}
+
+\RDGoodPractice{Keep the overview concise but traceable. The detail belongs in the notebook and appendix documents. This document should point clearly to those records rather than duplicating every engineering artefact in-line.}
+
+\section{Expenditure and attribution summary}
+\subsection{Salaries and wages}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.2cm}L{2.4cm}L{2.1cm}L{2.6cm}Y}
+\rowcolor{RDBand}
+\textbf{Person} & \textbf{Gross cost} & \textbf{R\&D allocation} & \textbf{Eligible amount} & \textbf{Basis of apportionment} \\
+{Name placeholder} & {\$0.00} & {0\%} & {\$0.00} & {Timesheet / sprint allocation / documented estimate} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\subsection{Contractors}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.8cm}L{2.0cm}L{2.0cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Contractor} & \textbf{Cost} & \textbf{R\&D \%} & \textbf{Eligible amount} & \textbf{Evidence} \\
+{Name / Entity} & {\$0.00} & {0\%} & {\$0.00} & {Invoice / SOW / notebook refs} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\subsection{Infrastructure and tools}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.8cm}L{2.0cm}L{2.0cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Service / tool} & \textbf{Cost} & \textbf{R\&D \%} & \textbf{Eligible amount} & \textbf{Allocation rationale} \\
+{Service placeholder} & {\$0.00} & {0\%} & {\$0.00} & {Environment usage / tagged workload / project ratio} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Evidence repository index}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.0cm}L{3.8cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Evidence type} & \textbf{Location} & \textbf{Period} & \textbf{Notes} \\
+Experiment notebooks & {[Path / link]} & {[Date range]} & {[Notebook IDs]} \\
+Git logs & {[Path / link]} & {[Date range]} & {[Repo / branch]} \\
+Timesheets & {[Path / link]} & {[Date range]} & {[Owner / approver]} \\
+Infra costs & {[Path / link]} & {[Date range]} & {[Billing export ref]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Audit readiness checklist}
+\begin{RDChecklist}
+\item Each claimed project is linked to a genuine technical uncertainty.
+\item Each uncertainty is linked to one or more experiment runs.
+\item Each experiment run records method, conditions, observations, and outcome.
+\item Commits, tickets, and engineering artefacts are linked to the relevant period.
+\item Salary and contractor apportionment is supported by timesheets or documented allocation logic.
+\item Infrastructure allocation is supported by a reproducible method.
+\item The annual claim pack references all supporting schedules and appendices.
+\end{RDChecklist}
+
+\RDEndMatter
+\end{document}

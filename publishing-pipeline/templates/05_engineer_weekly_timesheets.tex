@@ -1,0 +1,103 @@
+
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{Engineer Weekly R\&D Timesheet Pack}
+\RDCompany{<< document.company >>}
+\RDFY{<< document.financial_year >>}
+\RDPreparedBy{<< document.prepared_by >>}
+\RDVersion{<< document.version >>}
+\RDConfidentiality{<< document.confidentiality >>}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{Purpose}
+\RDSectionIntro{This pack is intended to capture weekly activity allocation where employees or contractors perform both eligible and non-eligible work. The aim is to preserve a contemporaneous basis for apportionment rather than relying solely on year-end estimates.}
+
+\section{Completion rules}
+\begin{RDChecklist}
+\item Complete weekly or at the close of each sprint.
+\item Allocate hours to meaningful activity categories, not vague labels.
+\item Tie R\&D-coded work back to a project ID or run ID.
+\item Keep explanatory comments where a week contains mixed work.
+\item Ensure totals reconcile to actual worked time or paid time basis used for apportionment.
+\end{RDChecklist}
+
+\section{Weekly summary sheet}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}Y@{}}
+\textbf{Employee / contractor:} & {[Name]} \\
+\textbf{Role:} & {[Role]} \\
+\textbf{Week commencing:} & {[Date]} \\
+\textbf{Manager / approver:} & {[Name]} \\
+\end{tabularx}
+
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{1.8cm}L{2.5cm}L{2.3cm}C{1.5cm}Y}
+\rowcolor{RDBand}
+\textbf{Date} & \textbf{Project / run ref} & \textbf{Category} & \textbf{Hours} & \textbf{Description of work} \\
+Mon & [ID] & Core / Support / Non-R\&D & [ ] & [Description] \\
+Tue & [ID] & Core / Support / Non-R\&D & [ ] & [Description] \\
+Wed & [ID] & Core / Support / Non-R\&D & [ ] & [Description] \\
+Thu & [ID] & Core / Support / Non-R\&D & [ ] & [Description] \\
+Fri & [ID] & Core / Support / Non-R\&D & [ ] & [Description] \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\subsection{Weekly totals}
+\rowcolors{2}{white}{RDSoft}
+\begin{tabularx}{\textwidth}{L{4.0cm}C{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Category} & \textbf{Hours} & \textbf{Notes} \\
+Core R\&D activities & [ ] & [ ] \\
+Supporting R\&D activities & [ ] & [ ] \\
+Non-R\&D activities & [ ] & [ ] \\
+Total hours & [ ] & [Should reconcile] \\
+\end{tabularx}
+\rowcolors{2}{}{}
+
+\subsection{Approval}
+Employee / contractor signature: \rule{5cm}{0.4pt} \hfill Date: \rule{3cm}{0.4pt}\\[0.4cm]
+Manager approval: \rule{5cm}{0.4pt} \hfill Date: \rule{3cm}{0.4pt}
+
+\clearpage
+\section{Category guidance}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.2cm}Y}
+\rowcolor{RDBand}
+\textbf{Category} & \textbf{Examples} \\
+Core R\&D & Experiment design, prototype development, benchmarking, instrumentation, structured technical investigation, analysis of experimental results. \\
+Supporting R\&D & Environment setup directly for an experiment, test data preparation for an experiment, directly related refactoring required to execute an experiment, directly related deployment to a test environment. \\
+Non-R\&D & Routine maintenance, customer support, standard implementation, content editing, production operations, ordinary bug fixing not part of experimental resolution. \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Blank weekly sheets}
+\subsection{Week 1}
+\vspace{0.3cm}
+\begin{tabularx}{\textwidth}{|L{1.5cm}|L{2.4cm}|L{2.2cm}|C{1.4cm}|Y|}
+\hline
+\rowcolor{RDBand}\textbf{Date} & \textbf{Project / run} & \textbf{Category} & \textbf{Hours} & \textbf{Description} \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\end{tabularx}
+
+\subsection{Week 2}
+\vspace{0.3cm}
+\begin{tabularx}{\textwidth}{|L{1.5cm}|L{2.4cm}|L{2.2cm}|C{1.4cm}|Y|}
+\hline
+\rowcolor{RDBand}\textbf{Date} & \textbf{Project / run} & \textbf{Category} & \textbf{Hours} & \textbf{Description} \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\rule{0pt}{0.75cm} & & & & \\\hline
+\end{tabularx}
+
+\RDEndMatter
+\end{document}

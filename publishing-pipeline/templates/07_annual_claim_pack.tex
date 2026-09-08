@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{Annual R\&D Claim Summary Pack}
+\RDCompany{<< document.company >>}
+\RDFY{<< document.financial_year >>}
+\RDPreparedBy{<< document.prepared_by >>}
+\RDVersion{<< document.version >>}
+\RDConfidentiality{<< document.confidentiality >>}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{How this pack is intended to scale to a full annual file}
+\RDSectionIntro{This document is structured so a completed year typically expands into a 40--60 page annual pack once the executive summary, project narratives, activity mapping, expenditure schedules, evidence indexes, and appendices are populated. The supporting standalone documents in this bundle provide the depth; this pack assembles the annual story and cross-references those records.}
+
+\section{Executive summary}
+\subsection{Company and program summary}
+Provide a concise overview of the company, the relevant product or platform, and the broad R\&D objective for the year.
+
+\subsection{What was technically uncertain}
+Summarise the major uncertainties investigated across the year.
+
+\subsection{What was learned}
+Summarise the principal outcomes, including successful and unsuccessful experimental paths.
+
+\section{Claim-period profile}
+\RDMetaTable
+
+\subsection{Income year and registration window}
+Document the relevant income year and internal timetable used to prepare the registration and tax claim records.
+
+\subsection{Governance and document ownership}
+State who owned the technical file, who reviewed cost schedules, and how evidence was assembled.
+
+\section{Project portfolio summary}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.2cm}L{4.1cm}L{2.6cm}Y}
+\rowcolor{RDBand}
+\textbf{Project ID} & \textbf{Project name} & \textbf{Status} & \textbf{Summary of technical focus and output} \\
+RND-2026-01 & {[Name]} & {Completed / Ongoing} & {[Summary]} \\
+RND-2026-02 & {[Name]} & {Completed / Ongoing} & {[Summary]} \\
+RND-2026-03 & {[Name]} & {Completed / Ongoing} & {[Summary]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Detailed project sections}
+\subsection{Project section template}
+\subsubsection{Project identification}
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}Y@{}}
+\textbf{Project ID:} & {[ID]} \\
+\textbf{Project name:} & {[Name]} \\
+\textbf{Technical lead:} & {[Name]} \\
+\textbf{Period active in year:} & {[Date range]} \\
+\end{tabularx}
+
+\subsubsection{Technical baseline}
+Describe the starting state and why ordinary implementation knowledge was insufficient.
+
+\subsubsection{Uncertainty and hypotheses}
+Describe the unresolved technical matters and the hypotheses tested.
+
+\subsubsection{Experimental work undertaken}
+Summarise the independent runs, methods, measurements, and engineering tasks performed.
+
+\subsubsection{Results and knowledge gained}
+State what was learned, including dead ends and partial outcomes.
+
+\subsubsection{Supporting evidence references}
+List notebook refs, commit ranges, diagrams, tickets, benchmark exports, and environment evidence.
+
+\section{Core and supporting activity summary}
+\RDSectionIntro{Summarise the mapping at a narrative level here and rely on the dedicated claim mapping register for the detailed row-by-row schedule.}
+
+\subsection{Core activities summary}
+Narrative summary.
+
+\subsection{Supporting activities summary}
+Narrative summary.
+
+\subsection{Boundary and exclusion notes}
+Explain what was treated as routine delivery, maintenance, support, or other excluded work.
+
+\section{Personnel expenditure schedules}
+\subsection{Employees}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.8cm}L{2.4cm}L{1.9cm}L{1.8cm}L{2.0cm}Y}
+\rowcolor{RDBand}
+\textbf{Name} & \textbf{Role} & \textbf{Total cost} & \textbf{R\&D \%} & \textbf{Eligible amount} & \textbf{Support} \\
+{Name placeholder} & {Role placeholder} & {\$0.00} & {0\%} & {\$0.00} & {Timesheet / allocation sheet ref} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\subsection{Contractors}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.3cm}L{1.9cm}L{1.8cm}L{2.0cm}Y}
+\rowcolor{RDBand}
+\textbf{Contractor} & \textbf{Cost} & \textbf{R\&D \%} & \textbf{Eligible amount} & \textbf{Support} \\
+{Contractor placeholder} & {\$0.00} & {0\%} & {\$0.00} & {Invoice / SOW / notebook refs} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Infrastructure and software schedules}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.8cm}L{1.9cm}L{1.8cm}L{2.0cm}Y}
+\rowcolor{RDBand}
+\textbf{Cost item} & \textbf{Total cost} & \textbf{R\&D \%} & \textbf{Eligible amount} & \textbf{Worksheet reference} \\
+{Item placeholder} & {\$0.00} & {0\%} & {\$0.00} & {Worksheet ref} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Annual expenditure roll-up}
+\rowcolors{2}{white}{RDSoft}
+\begin{tabularx}{\textwidth}{L{5.1cm}L{2.2cm}Y}
+\rowcolor{RDBand}
+\textbf{Category} & \textbf{Eligible amount} & \textbf{Reference} \\
+Employee expenditure & {\$0.00} & {Section / schedule ref} \\
+Contractor expenditure & {\$0.00} & {Section / schedule ref} \\
+Infrastructure expenditure & {\$0.00} & {Section / schedule ref} \\
+Software / tools & {\$0.00} & {Section / schedule ref} \\
+Other eligible categories & {\$0.00} & {Section / schedule ref} \\
+\textbf{Total eligible expenditure} & \textbf{\$0.00} & \textbf{Cross-check completed} \\
+\end{tabularx}
+\rowcolors{2}{}{}
+
+
+\section{Evidence index}
+
+\subsection*{Overview record}
+\textbf{Reference:} 01\_overview\_of\_all\_work.tex / PDF \\
+\textbf{Period:} Annual \\
+\textbf{Notes:} Program summary
+
+\subsection*{Experiment notebooks}
+\textbf{Reference:} 02\_experiment\_notebook.tex / filled records \\
+\textbf{Period:} Annual \\
+\textbf{Notes:} Independent runs
+
+\subsection*{Claim mapping register}
+\textbf{Reference:} 03\_claim\_mapping\_register.tex / PDF \\
+\textbf{Period:} Annual \\
+\textbf{Notes:} Core / supporting mapping
+
+\subsection*{Git appendix}
+\textbf{Reference:} 04\_git\_evidence\_appendix.tex / PDF \\
+\textbf{Period:} Annual \\
+\textbf{Notes:} Repository history
+
+\subsection*{Timesheets}
+\textbf{Reference:} 05\_engineer\_weekly\_timesheets.tex / filled records \\
+\textbf{Period:} Weekly \\
+\textbf{Notes:} Labour support
+
+\subsection*{Infrastructure worksheets}
+\textbf{Reference:} 06\_infrastructure\_cost\_worksheets.tex / filled records \\
+\textbf{Period:} Monthly \\
+\textbf{Notes:} Cost allocation support
+
+\section{Management review and declarations}
+\subsection{Technical review}
+Reviewed by: \rule{6cm}{0.4pt} \hfill Date: \rule{3cm}{0.4pt}
+
+\subsection{Finance review}
+Reviewed by: \rule{6cm}{0.4pt} \hfill Date: \rule{3cm}{0.4pt}
+
+\subsection{Final approval}
+Approved by: \rule{6cm}{0.4pt} \hfill Date: \rule{3cm}{0.4pt}
+
+\RDEndMatter
+\end{document}

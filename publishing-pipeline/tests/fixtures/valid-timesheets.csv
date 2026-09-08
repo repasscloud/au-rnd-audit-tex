@@ -1,0 +1,2 @@
+person,date,project_ref,run_ref,category,hours,description
+Example Engineer,2026-01-12,RND-2026-01,RUN-001,core,7.5,Measured prototype behaviour

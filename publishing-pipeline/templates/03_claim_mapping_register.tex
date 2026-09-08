@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage{rd_audit_style}
+
+\RDDocumentTitle{Core and Supporting R\&D Activity Claim Mapping Register}
+\RDCompany{<< document.company >>}
+\RDFY{<< document.financial_year >>}
+\RDPreparedBy{<< document.prepared_by >>}
+\RDVersion{<< document.version >>}
+\RDConfidentiality{<< document.confidentiality >>}
+
+\begin{document}
+\RDTitlePage
+\tableofcontents
+\clearpage
+
+\section{Purpose}
+\RDSectionIntro{This register maps the annual claim to the underlying technical work. It should allow a reviewer to move from each claimed activity to the relevant uncertainty, experiment evidence, engineering artefacts, personnel effort, and expenditure schedules.}
+
+\section{Instructions}
+\begin{RDChecklist}
+\item Use one row per claimed activity grouping or sub-stream.
+\item Separate core activity logic from supporting activity logic.
+\item Record the basis for inclusion, not just the activity label.
+\item Reference the exact notebook IDs, repositories, and expenditure schedules used to support the row.
+\end{RDChecklist}
+
+\section{Core R\&D activity mapping}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.1cm}L{3.9cm}L{2.4cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Core ID} & \textbf{Activity description} & \textbf{Uncertainty ref} & \textbf{Notebook ref} & \textbf{Why this is treated as core experimental activity} \\
+CORE-01 & {[Describe the experimental activity.]} & {[UT-ID]} & {[RUN / NB refs]} & {[Explain the experimental character, variables, and knowledge gap.]} \\
+CORE-02 & {[Describe the experimental activity.]} & {[UT-ID]} & {[RUN / NB refs]} & {[Explain the experimental character, variables, and knowledge gap.]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Supporting R\&D activity mapping}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.1cm}L{3.7cm}L{2.2cm}L{2.2cm}Y}
+\rowcolor{RDBand}
+\textbf{Support ID} & \textbf{Activity description} & \textbf{Linked core ref} & \textbf{Evidence ref} & \textbf{Why this is treated as directly related supporting activity} \\
+SUP-01 & {[Describe the supporting activity.]} & {[CORE-ID]} & {[Notebook / commit / infra refs]} & {[Explain why it was undertaken for and directly related to the core activity.]} \\
+SUP-02 & {[Describe the supporting activity.]} & {[CORE-ID]} & {[Notebook / commit / infra refs]} & {[Explain why it was undertaken for and directly related to the core activity.]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Exclusions and non-claimable work log}
+\RDSectionIntro{Keeping a short record of excluded items improves credibility and helps show that apportionment decisions were considered rather than assumed.}
+
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{3.6cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Work item} & \textbf{Category} & \textbf{Reason excluded or reduced} \\
+{[Example: routine bug fix]} & {Non-R\&D} & {[Reason]} \\
+{[Example: production support]} & {Non-R\&D} & {[Reason]} \\
+{[Example: mixed sprint item]} & {Apportioned} & {[Reason]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Evidence cross-reference matrix}
+\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{L{2.0cm}L{2.0cm}L{2.6cm}L{2.4cm}Y}
+\rowcolor{RDBand}
+\textbf{Activity ref} & \textbf{Project ref} & \textbf{People / cost ref} & \textbf{Git / ticket ref} & \textbf{Comments} \\
+{[CORE-ID / SUP-ID]} & {[Project ID]} & {[Timesheet or cost schedule]} & {[Commit range / PR / issue]} & {[Notes]} \\
+\end{xltabular}
+\rowcolors{2}{}{}
+
+\section{Annual claim logic summary}
+\subsection{Core activity narrative}
+Summarise the principal experimental streams and the technical questions they addressed.
+
+\subsection{Supporting activity narrative}
+Summarise the directly related enabling activities, their boundaries, and any apportionment principles applied.
+
+\subsection{Boundary notes}
+Explain how routine engineering, maintenance, implementation-only work, customer configuration, sales support, or general production operations were identified and excluded or reduced.
+
+\RDEndMatter
+\end{document}

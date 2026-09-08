@@ -14,6 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install Tectonic
         shell: bash
         run: |
@@ -22,6 +27,10 @@ jobs:
           sudo mv tectonic /usr/local/bin/tectonic
           tectonic --version
 
-      - name: Compile all .tex files without warnings
+      - name: Compile static pack without warnings
         shell: bash
-        run: ./test-build.sh
+        run: ./static-pack/test-build.sh
+
+      - name: Test and compile publishing pipeline without warnings
+        shell: bash
+        run: ./publishing-pipeline/publish.sh

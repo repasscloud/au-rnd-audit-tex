@@ -1,0 +1,2 @@
+month,service,provider,total_cost,rnd_percent,eligible_amount,allocation_basis,evidence_ref
+2026-01,Compute environment,Example Cloud,100.00,50,50.00,Tagged experimental environment,invoice-001
