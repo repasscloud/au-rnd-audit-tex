@@ -11,7 +11,7 @@ projects:
     technical_problem: Example only - external acceptance could become ambiguous after interruption.
     uncertainty_refs: [UT-01]
     experiment_refs: [RUN-2026-001, RUN-2026-002]
-    activity_refs: [ACT-2026-001, ACT-2026-002]
+    activity_refs: [ACT-2026-001, ACT-2026-002, ACT-2026-003]
     contributor_refs: [P-001, P-002]
     evidence_refs: [EV-0100]
     repositories: [example/c360]

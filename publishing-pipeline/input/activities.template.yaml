@@ -11,5 +11,8 @@ activities:
     project_refs: [RND-2026-01]
     uncertainty_refs: [UT-01]
     experiment_refs: [RUN-2026-001]
+    supports_activity_refs: []
+    supports_experiment_refs: []
+    review_refs: []
     person_refs: [P-001]
     evidence_refs: [EV-0001]

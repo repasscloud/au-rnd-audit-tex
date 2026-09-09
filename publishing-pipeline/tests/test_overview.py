@@ -30,7 +30,7 @@ class OverviewSourceTests(unittest.TestCase):
         overview = load_overview_sources(self.input_dir, self.experiments)
 
         self.assertEqual([person["id"] for person in overview["people"]], ["P-001", "P-002"])
-        self.assertEqual([activity["id"] for activity in overview["activities"]], ["ACT-2026-002", "ACT-2026-001"])
+        self.assertEqual([activity["id"] for activity in overview["activities"]], ["ACT-2026-002", "ACT-2026-003", "ACT-2026-001"])
         self.assertEqual([item["evidence_id"] for item in overview["program_evidence"]], ["EV-0100", "EV-0101"])
         self.assertEqual([run["id"] for run in overview["experiment_summaries"]], ["RUN-2026-001", "RUN-2026-002"])
         self.assertEqual(overview["experiment_summaries"][0]["conclusion_text"], self.experiments[0]["conclusion_text"])

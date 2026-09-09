@@ -1,2 +1,2 @@
-month,service,provider,total_cost,rnd_percent,eligible_amount,allocation_basis,evidence_ref
-2026-01,Compute environment,Example Cloud,100.00,50,50.00,Tagged experimental environment,invoice-001
+cost_id,month,service,provider,total_cost,rnd_percent,eligible_amount,allocation_basis,activity_refs,evidence_ref
+COST-2026-0001,2026-07,Isolated test compute,Example Cloud,100.00,50,50.00,Example only - tagged isolated test usage,ACT-2026-001,EV-0101

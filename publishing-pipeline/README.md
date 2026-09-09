@@ -26,6 +26,7 @@ Each command prepares a local Python virtual environment, installs the two requi
 - `input/experiment-evidence.csv`: evidence catalogue linked to runs.
 - `input/timesheets.csv`: high-volume labour allocation rows.
 - `input/infrastructure-costs.csv`: high-volume infrastructure and tooling rows.
+- `input/reviews.yaml` or `input/reviews/review.REV-YYYY-NNN.yaml`: accountable human-review decisions.
 - `templates/`: data-aware LaTeX templates. Edit these only when changing document structure or presentation.
 
 ## Files the pipeline owns
@@ -57,6 +58,14 @@ experiment, timesheet, and infrastructure sources. See the
 for the exact mappings, combined/split YAML rules, lifecycle, validation boundary,
 and AI-agent protocol.
 
+## Claim Mapping Register authoring
+
+Document 03 derives a concise traceability matrix from the overview, experiment,
+review, timesheet, and infrastructure sources. See the
+[03 Claim Mapping Register authoring guide](docs/03-claim-mapping-register/README.md).
+
 ## Remaining baseline
 
-The overview, claim-mapping register, git appendix, weekly timesheets, infrastructure worksheets, and annual claim pack still contain instructional placeholders. Their proposed data contracts and conversion sequence are documented in `docs/superpowers/specs/2026-09-08-published-pdf-data-contract-design.md`.
+The git appendix, weekly timesheets, infrastructure worksheets, and annual claim
+pack still contain instructional placeholders. Their proposed contracts are in
+`docs/superpowers/specs/2026-09-08-published-pdf-data-contract-design.md`.

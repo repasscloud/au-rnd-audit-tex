@@ -1,0 +1,12 @@
+# Illustrative structure only. Never loaded.
+reviews:
+  - id: REV-2026-001
+    decision_type: technical
+    question: "[Decision requiring an accountable human]"
+    owner_person_ref: P-001
+    status: open
+    raised_at: 2026-07-15T11:00:00+09:30
+    subject_refs:
+      projects: [RND-2026-01]
+      uncertainties: [UT-01]
+    evidence_refs: [EV-0001]

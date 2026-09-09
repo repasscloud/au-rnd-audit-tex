@@ -25,3 +25,18 @@ activities:
     experiment_refs: [RUN-2026-001, RUN-2026-002]
     person_refs: [P-001, P-002]
     evidence_refs: [EV-0100]
+  - id: ACT-2026-003
+    title: Example only - prepare isolated interruption fixtures
+    classification: candidate_supporting
+    classification_owner: P-002
+    period_start: 2026-07-13
+    period_end: 2026-07-14
+    description: Example only - prepared the isolated queue state used by the declared runs.
+    rationale: Example only - the fixtures were supplied as directly enabling the systematic progression and no broader attribution is asserted.
+    project_refs: [RND-2026-01]
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001]
+    supports_activity_refs: [ACT-2026-001]
+    supports_experiment_refs: [RUN-2026-001]
+    person_refs: [P-002]
+    evidence_refs: [EV-0101]

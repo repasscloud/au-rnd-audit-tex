@@ -11,6 +11,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from experiments import load_experiment_sources
 from overview import load_overview_sources
+from claim_mapping import build_claim_mapping, load_reviews
 from validation import SourceValidationError, load_strict_csv, load_yaml_mapping
 
 
@@ -49,6 +50,21 @@ CSV_SCHEMAS = {
     ),
 }
 
+ENHANCED_CSV_SCHEMAS = {
+    "timesheets.csv": ("timesheet_id", "person_ref", "date", "project_ref", "activity_ref", "run_ref", "category", "hours", "description"),
+    "infrastructure-costs.csv": ("cost_id", "month", "service", "provider", "total_cost", "rnd_percent", "eligible_amount", "allocation_basis", "activity_refs", "evidence_ref"),
+}
+
+
+def _load_compatible_csv(input_dir: Path, filename: str) -> list[dict[str, str]]:
+    try:
+        return load_strict_csv(input_dir / filename, ENHANCED_CSV_SCHEMAS[filename])
+    except SourceValidationError as enhanced_error:
+        try:
+            return load_strict_csv(input_dir / filename, CSV_SCHEMAS[filename])
+        except SourceValidationError:
+            raise enhanced_error
+
 
 def _required_row_values(filename: str, row_number: int, row: dict[str, str]) -> None:
     for field, value in row.items():
@@ -57,7 +73,7 @@ def _required_row_values(filename: str, row_number: int, row: dict[str, str]) ->
 
 
 def _validate_timesheets(rows: list[dict[str, str]]) -> None:
-    allowed_categories = {"core", "supporting", "non-rnd"}
+    allowed_categories = {"core", "supporting", "non-rnd", "review-required"}
     for row_number, row in enumerate(rows, start=2):
         _required_row_values("timesheets.csv", row_number, row)
         try:
@@ -128,15 +144,14 @@ def load_sources(input_dir: Path) -> dict[str, Any]:
     sources: dict[str, Any] = dict(claim)
     sources["experiments"] = load_experiment_sources(input_dir)
     sources["overview"] = load_overview_sources(input_dir, sources["experiments"])
-    timesheets = load_strict_csv(input_dir / "timesheets.csv", CSV_SCHEMAS["timesheets.csv"])
-    infrastructure_costs = load_strict_csv(
-        input_dir / "infrastructure-costs.csv",
-        CSV_SCHEMAS["infrastructure-costs.csv"],
-    )
+    timesheets = _load_compatible_csv(input_dir, "timesheets.csv")
+    infrastructure_costs = _load_compatible_csv(input_dir, "infrastructure-costs.csv")
     _validate_timesheets(timesheets)
     _validate_infrastructure_costs(infrastructure_costs)
     sources["timesheets"] = timesheets
     sources["infrastructure_costs"] = infrastructure_costs
+    sources["reviews"] = load_reviews(input_dir)
+    sources["claim_mapping"] = build_claim_mapping(sources["overview"], sources["experiments"], timesheets, infrastructure_costs, sources["reviews"])
     return sources
 
 

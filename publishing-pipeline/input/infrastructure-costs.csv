@@ -1,1 +1,1 @@
-month,service,provider,total_cost,rnd_percent,eligible_amount,allocation_basis,evidence_ref
+cost_id,month,service,provider,total_cost,rnd_percent,eligible_amount,allocation_basis,activity_refs,evidence_ref

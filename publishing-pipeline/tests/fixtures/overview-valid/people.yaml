@@ -5,7 +5,7 @@ people:
     engagement_type: employee
     technical_responsibilities: [observation, evidence capture]
     project_refs: [RND-2026-01]
-    activity_refs: [ACT-2026-001]
+    activity_refs: [ACT-2026-001, ACT-2026-003]
     evidence_refs: {state: no_data}
   - id: P-001
     name: Example Engineer

@@ -260,6 +260,25 @@ def load_overview_sources(input_dir: Path, experiments: list[dict[str, Any]]) ->
         else: _refs(activity.get("evidence_refs"), evidence_ids, source, "evidence_refs", False)
         if activity["classification"] == "candidate_experimental" and (not uncertainty_refs or not experiment_refs): raise SourceValidationError(f"{source} candidate_experimental requires uncertainty and experiment references")
         if activity["classification"] == "outside_rnd_boundary" and experiment_refs: raise SourceValidationError(f"{source} outside_rnd_boundary must not reference experiments")
+        supports_activities = _refs(activity.get("supports_activity_refs", []), activity_ids, source, "supports_activity_refs", False)
+        supports_experiments = _refs(activity.get("supports_experiment_refs", []), experiment_ids, source, "supports_experiment_refs", False)
+        review_refs = activity.get("review_refs", [])
+        if not isinstance(review_refs, list) or len(review_refs) != len(set(review_refs)):
+            raise SourceValidationError(f"{source} review_refs must be a list without duplicates")
+        if activity["classification"] == "candidate_supporting":
+            if not supports_activities and not supports_experiments:
+                raise SourceValidationError(f"{source} candidate_supporting requires a support target")
+            for target in supports_activities:
+                if activity_ids[target].get("classification") != "candidate_experimental":
+                    raise SourceValidationError(f"{source} support target {target} must be candidate_experimental")
+            for target in supports_experiments:
+                if experiment_ids[target]["project_ref"] in project_ids and experiment_ids[target]["project_ref"] not in activity["project_refs"]:
+                    raise SourceValidationError(f"{source} support experiment {target} must belong to a referenced project")
+        elif supports_activities or supports_experiments:
+            raise SourceValidationError(f"{source} support targets require candidate_supporting classification")
+        activity["supports_activity_refs"] = supports_activities
+        activity["supports_experiment_refs"] = supports_experiments
+        activity["review_refs"] = review_refs
 
     for run in experiments:
         if run["project_ref"] not in project_ids: raise SourceValidationError(f"experiment {run['id']} references unknown project_ref {run['project_ref']}")
@@ -270,6 +289,8 @@ def load_overview_sources(input_dir: Path, experiments: list[dict[str, Any]]) ->
     for project in projects:
         owned = {run["id"] for run in experiments if run["project_ref"] == project["id"]}
         if set(project["experiment_refs"]) != owned: raise SourceValidationError(f"project {project['id']} experiment_refs must match experiment project_ref values")
+        linked_activities = {activity["id"] for activity in activities if project["id"] in activity["project_refs"]}
+        if set(project["activity_refs"]) != linked_activities: raise SourceValidationError(f"project {project['id']} activity_refs must match activity project_refs")
 
     projects.sort(key=lambda x: (x["_period_start"], x["id"])); project_order = {p["id"]: i for i, p in enumerate(projects)}
     uncertainties.sort(key=lambda x: (min(project_order[r] for r in x["project_refs"]), x["id"])); people.sort(key=lambda x: (x["name"].casefold(), x["id"]))

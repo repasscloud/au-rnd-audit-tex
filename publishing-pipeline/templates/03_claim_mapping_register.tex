@@ -1,80 +1,98 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage{rd_audit_style}
-
-\RDDocumentTitle{Core and Supporting R\&D Activity Claim Mapping Register}
+\RDDocumentTitle{Candidate Activity Claim Mapping Register}
 \RDCompany{<< document.company >>}
 \RDFY{<< document.financial_year >>}
 \RDPreparedBy{<< document.prepared_by >>}
 \RDVersion{<< document.version >>}
 \RDConfidentiality{<< document.confidentiality >>}
+\RDDocumentSubtitle{Concise technical, activity, evidence, and resource traceability}
+\RDPurposeText{This register presents supplier-authored candidate classifications and explicit source relationships. It is not an R\&D eligibility determination.}
 
 \begin{document}
 \RDTitlePage
 \tableofcontents
 \clearpage
 
-\section{Purpose}
-\RDSectionIntro{This register maps the annual claim to the underlying technical work. It should allow a reviewer to move from each claimed activity to the relevant uncertainty, experiment evidence, engineering artefacts, personnel effort, and expenditure schedules.}
+\section{Purpose and interpretation}
+\RDSectionIntro{This register connects supplied activity classifications to the underlying technical record and recorded resource attribution. Detailed annual narrative remains in document 01; experiment methods, observations, evaluations, and conclusions remain in document 02. The publisher validates structure and consistency but does not determine legal R\&D eligibility.}
+\RDAuditNote{Candidate classifications, supporting relationships, and allocation categories are supplier-authored assertions. No relationship is inferred from repository activity, job title, experiment participation, or proximity in time.}
 
-\section{Instructions}
-\begin{RDChecklist}
-\item Use one row per claimed activity grouping or sub-stream.
-\item Separate core activity logic from supporting activity logic.
-\item Record the basis for inclusion, not just the activity label.
-\item Reference the exact notebook IDs, repositories, and expenditure schedules used to support the row.
-\end{RDChecklist}
+\section{Project, uncertainty, and experiment index}
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.3cm}Y L{2.3cm}L{3.0cm}@{}}
+\rowcolor{RDBand}\textbf{Project} & \textbf{Name} & \textbf{Uncertainties} & \textbf{Experiment runs} \\
+<% for project in claim_mapping.projects %><< project.id >> & << project.name >> & << project.uncertainty_refs | join(', ') >> & << project.experiment_refs | join(', ') >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
 
-\section{Core R\&D activity mapping}
-\rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.1cm}L{3.9cm}L{2.4cm}L{2.4cm}Y}
-\rowcolor{RDBand}
-\textbf{Core ID} & \textbf{Activity description} & \textbf{Uncertainty ref} & \textbf{Notebook ref} & \textbf{Why this is treated as core experimental activity} \\
-CORE-01 & {[Describe the experimental activity.]} & {[UT-ID]} & {[RUN / NB refs]} & {[Explain the experimental character, variables, and knowledge gap.]} \\
-CORE-02 & {[Describe the experimental activity.]} & {[UT-ID]} & {[RUN / NB refs]} & {[Explain the experimental character, variables, and knowledge gap.]} \\
-\end{xltabular}
-\rowcolors{2}{}{}
+\section{Candidate experimental activities}
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}Y L{2.0cm}L{2.7cm}L{2.2cm}@{}}
+\rowcolor{RDBand}\textbf{Activity} & \textbf{Supplied description and rationale} & \textbf{Uncertainty} & \textbf{Runs} & \textbf{People / evidence} \\
+<% for activity in claim_mapping.experimental_activities %><< activity.id >> & << activity.description >> \textbf{Rationale:} << activity.rationale >> & << activity.uncertainty_refs | join(', ') >> & << activity.experiment_refs | join(', ') >> & << activity.person_refs | join(', ') >>; <% if activity.evidence_refs.has_data is defined %>No data provided.<% else %><< activity.evidence_refs | join(', ') >><% endif %> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
 
-\section{Supporting R\&D activity mapping}
-\rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.1cm}L{3.7cm}L{2.2cm}L{2.2cm}Y}
-\rowcolor{RDBand}
-\textbf{Support ID} & \textbf{Activity description} & \textbf{Linked core ref} & \textbf{Evidence ref} & \textbf{Why this is treated as directly related supporting activity} \\
-SUP-01 & {[Describe the supporting activity.]} & {[CORE-ID]} & {[Notebook / commit / infra refs]} & {[Explain why it was undertaken for and directly related to the core activity.]} \\
-SUP-02 & {[Describe the supporting activity.]} & {[CORE-ID]} & {[Notebook / commit / infra refs]} & {[Explain why it was undertaken for and directly related to the core activity.]} \\
-\end{xltabular}
-\rowcolors{2}{}{}
+\section{Candidate supporting activities}
+<% if claim_mapping.supporting_activities %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}Y L{2.8cm}L{2.5cm}@{}}
+\rowcolor{RDBand}\textbf{Activity} & \textbf{Supplied relationship rationale} & \textbf{Supports} & \textbf{People / evidence} \\
+<% for activity in claim_mapping.supporting_activities %><< activity.id >> & << activity.description >> \textbf{Rationale:} << activity.rationale >> & Activities: << activity.supports_activity_refs | join(', ') >>; runs: << activity.supports_experiment_refs | join(', ') >> & << activity.person_refs | join(', ') >>; << activity.evidence_refs | join(', ') >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNotApplicable{No candidate supporting activity was supplied for this publication.}<% endif %>
 
-\section{Exclusions and non-claimable work log}
-\RDSectionIntro{Keeping a short record of excluded items improves credibility and helps show that apportionment decisions were considered rather than assumed.}
+\section{Experiment trace matrix}
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}L{1.9cm}L{2.0cm}L{2.0cm}Y@{}}
+\rowcolor{RDBand}\textbf{Run / status} & \textbf{Project / uncertainty} & \textbf{Activities} & \textbf{People} & \textbf{Observations / evidence} \\
+<% for run in claim_mapping.experiments %><< run.id >> (<< run.status_label >>) & << run.project_ref >>; << run.uncertainty_refs | join(', ') >> & << run.activity_refs | join(', ') >> & << run.person_refs | join(', ') >> & << run.observation_refs | join(', ') >>; << run.evidence_refs | join(', ') >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
 
-\rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{3.6cm}L{2.4cm}Y}
-\rowcolor{RDBand}
-\textbf{Work item} & \textbf{Category} & \textbf{Reason excluded or reduced} \\
-{[Example: routine bug fix]} & {Non-R\&D} & {[Reason]} \\
-{[Example: production support]} & {Non-R\&D} & {[Reason]} \\
-{[Example: mixed sprint item]} & {Apportioned} & {[Reason]} \\
-\end{xltabular}
-\rowcolors{2}{}{}
+\section{People and recorded effort}
+<% if claim_mapping.timesheets %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}L{1.5cm}L{2.1cm}L{2.1cm}L{1.6cm}Y@{}}
+\rowcolor{RDBand}\textbf{Timesheet} & \textbf{Person} & \textbf{Activity} & \textbf{Project / run} & \textbf{Hours / category} & \textbf{Recorded work} \\
+<% for row in claim_mapping.timesheets %><< row.timesheet_id >> & << row.person_ref >> & << row.activity_ref >> & << row.project_ref >><% if row.run_ref %> / << row.run_ref >><% endif %> & << row.hours >> / << row.category >> & << row.description >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNotApplicable{<< claim_mapping.program.applicability.labour_summary.reason >>}<% endif %>
 
-\section{Evidence cross-reference matrix}
-\rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.0cm}L{2.0cm}L{2.6cm}L{2.4cm}Y}
-\rowcolor{RDBand}
-\textbf{Activity ref} & \textbf{Project ref} & \textbf{People / cost ref} & \textbf{Git / ticket ref} & \textbf{Comments} \\
-{[CORE-ID / SUP-ID]} & {[Project ID]} & {[Timesheet or cost schedule]} & {[Commit range / PR / issue]} & {[Notes]} \\
-\end{xltabular}
-\rowcolors{2}{}{}
+\section{Infrastructure and tooling attribution}
+<% if claim_mapping.infrastructure_costs %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.4cm}L{1.5cm}Y L{2.3cm}L{2.0cm}@{}}
+\rowcolor{RDBand}\textbf{Cost record} & \textbf{Month} & \textbf{Service / basis} & \textbf{Activities} & \textbf{Evidence} \\
+<% for row in claim_mapping.infrastructure_costs %><< row.cost_id >> & << row.month >> & << row.service >> --- << row.allocation_basis >> & << row.activity_ref_list | join(', ') >> & << row.evidence_ref >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNotApplicable{<< claim_mapping.program.applicability.infrastructure_summary.reason >>}<% endif %>
 
-\section{Annual claim logic summary}
-\subsection{Core activity narrative}
-Summarise the principal experimental streams and the technical questions they addressed.
+\section{Exclusions and boundary record}
+<% if claim_mapping.excluded_activities %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}L{2.7cm}Y L{2.2cm}@{}}
+\rowcolor{RDBand}\textbf{Activity} & \textbf{Supplied classification} & \textbf{Description and rationale} & \textbf{Project / people} \\
+<% for activity in claim_mapping.excluded_activities %><< activity.id >> & << activity.classification_label >> & << activity.description >> \textbf{Rationale:} << activity.rationale >> & << activity.project_refs | join(', ') >>; << activity.person_refs | join(', ') >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNotApplicable{No ordinary-engineering or outside-boundary activity was supplied for this publication.}<% endif %>
 
-\subsection{Supporting activity narrative}
-Summarise the directly related enabling activities, their boundaries, and any apportionment principles applied.
+\section{Human review register}
+<% if claim_mapping.reviews %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.2cm}L{2.0cm}Y L{1.5cm}L{1.8cm}@{}}
+\rowcolor{RDBand}\textbf{Review} & \textbf{Type} & \textbf{Question} & \textbf{Owner} & \textbf{Status} \\
+<% for review in claim_mapping.reviews %><< review.id >> & << review.decision_type >> & << review.question >> & << review.owner_person_ref >> & << review.status >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNotApplicable{No human-review-required activity or unresolved accountable decision was supplied for this publication.}<% endif %>
 
-\subsection{Boundary notes}
-Explain how routine engineering, maintenance, implementation-only work, customer configuration, sales support, or general production operations were identified and excluded or reduced.
+\section{Coverage and integrity notes}
+\begin{itemize}
+\item Experiment details and chronology remain in document 02, using the same run IDs.
+\item Annual technical context and boundary narrative remain in document 01, using the same project, uncertainty, activity, person, and evidence IDs.
+\item Resource rows record supplied attribution only; the publisher does not approve eligibility or allocation percentages.
+\end{itemize}
 
-\RDEndMatter
+\clearpage
+\section*{Document control}
+\addcontentsline{toc}{section}{Document control}
+\RDMetaTable
 \end{document}

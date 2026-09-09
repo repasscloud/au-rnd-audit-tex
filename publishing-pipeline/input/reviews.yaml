@@ -1,0 +1,12 @@
+reviews:
+  - id: REV-2026-001
+    decision_type: technical
+    question: Illustrative example only - determine whether later-release reproducibility requires another experimental run.
+    owner_person_ref: P-001
+    status: open
+    raised_at: 2026-07-14T12:15:00+09:30
+    subject_refs:
+      projects: [RND-2026-01]
+      uncertainties: [UT-01]
+      experiments: [RUN-2026-001]
+    evidence_refs: [EV-0101]
