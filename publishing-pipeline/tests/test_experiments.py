@@ -63,6 +63,69 @@ class ExperimentSourceTests(unittest.TestCase):
         self.assertEqual(runs[0]["results"][0]["metric"], "provider submissions")
         self.assertEqual(runs[1]["results"][0]["kind"], "qualitative")
 
+    def _use_split_experiment_files(self) -> None:
+        document = self._restore_yaml()
+        (self.input_dir / "experiments.yaml").unlink()
+        split_dir = self.input_dir / "experiments"
+        split_dir.mkdir()
+        for run in document["experiments"]:
+            path = split_dir / f"experiment.{run['id']}.yaml"
+            path.write_text(
+                yaml.safe_dump({"experiment": run}, sort_keys=False),
+                encoding="utf-8",
+            )
+
+    def test_loads_split_experiment_files_and_sorts_by_chronology(self) -> None:
+        self._use_split_experiment_files()
+
+        runs = load_experiment_sources(self.input_dir)
+
+        self.assertEqual([run["id"] for run in runs], ["RUN-2026-001", "RUN-2026-002"])
+
+    def test_rejects_combined_and_split_input_modes_together(self) -> None:
+        document = self._restore_yaml()
+        split_dir = self.input_dir / "experiments"
+        split_dir.mkdir()
+        run = document["experiments"][0]
+        (split_dir / f"experiment.{run['id']}.yaml").write_text(
+            yaml.safe_dump({"experiment": run}, sort_keys=False),
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(SourceValidationError, "cannot use both experiments.yaml and split experiment files"):
+            load_experiment_sources(self.input_dir)
+
+    def test_rejects_split_filename_that_does_not_match_run_id(self) -> None:
+        self._use_split_experiment_files()
+        source = self.input_dir / "experiments" / "experiment.RUN-2026-001.yaml"
+        document = yaml.load(source.read_text(encoding="utf-8"), Loader=yaml.BaseLoader)
+        document["experiment"]["id"] = "RUN-2026-099"
+        source.write_text(yaml.safe_dump(document, sort_keys=False), encoding="utf-8")
+
+        with self.assertRaisesRegex(SourceValidationError, "filename ID RUN-2026-001 must match experiment.id RUN-2026-099"):
+            load_experiment_sources(self.input_dir)
+
+    def test_ignores_split_template_files(self) -> None:
+        self._use_split_experiment_files()
+        (self.input_dir / "experiments" / "experiment.RUN-YYYY-NNN.template.yaml").write_text(
+            "experiment:\n  id: RUN-2099-999\n",
+            encoding="utf-8",
+        )
+
+        runs = load_experiment_sources(self.input_dir)
+
+        self.assertNotIn("RUN-2099-999", {run["id"] for run in runs})
+
+    def test_rejects_invalid_split_experiment_filename(self) -> None:
+        self._use_split_experiment_files()
+        (self.input_dir / "experiments" / "experiment.latest.yaml").write_text(
+            "experiment:\n  id: RUN-2099-999\n",
+            encoding="utf-8",
+        )
+
+        with self.assertRaisesRegex(SourceValidationError, "invalid split experiment filename"):
+            load_experiment_sources(self.input_dir)
+
     def test_rejects_missing_required_run_fields(self) -> None:
         removers = {
             "title": lambda run: run.pop("title"),

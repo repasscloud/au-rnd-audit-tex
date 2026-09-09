@@ -19,8 +19,13 @@ class PublisherTests(unittest.TestCase):
         self.input_dir = Path(self.temporary_directory.name) / "input"
         self.input_dir.mkdir()
         for source in self.fixture_dir.glob("valid-*"):
+            if source.is_dir():
+                continue
             target_name = source.name.removeprefix("valid-")
             shutil.copy2(source, self.input_dir / target_name)
+        for source in (self.fixture_dir / "overview-valid").iterdir():
+            if source.is_file():
+                shutil.copy2(source, self.input_dir / source.name)
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
@@ -32,6 +37,7 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(sources["experiments"][0]["id"], "RUN-2026-001")
         self.assertEqual(sources["timesheets"][0]["category"], "core")
         self.assertEqual(sources["infrastructure_costs"][0]["eligible_amount"], "50.00")
+        self.assertEqual(sources["overview"]["projects"][0]["id"], "RND-2026-01")
 
     def test_loads_normalized_experiment_children(self) -> None:
         sources = load_sources(self.input_dir)
@@ -77,11 +83,20 @@ class PublisherTests(unittest.TestCase):
         claim_path = self.input_dir / "claim.yaml"
         claim_text = claim_path.read_text(encoding="utf-8")
         claim_path.write_text(
-            claim_text.replace("  financial_year: 2025-2026\n", ""),
+            claim_text.replace("  financial_year: 2026-2027\n", ""),
             encoding="utf-8",
         )
 
         with self.assertRaisesRegex(SourceValidationError, "financial_year"):
+            load_sources(self.input_dir)
+
+    def test_rejects_placeholder_in_active_claim_metadata(self) -> None:
+        claim_path = self.input_dir / "claim.yaml"
+        claim_path.write_text(
+            claim_path.read_text(encoding="utf-8").replace("R&D Manager", '"[Name / Role]"'),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(SourceValidationError, "claim.yaml contains placeholder text at document.owner"):
             load_sources(self.input_dir)
 
     def test_rejects_duplicate_experiment_ids(self) -> None:
@@ -145,6 +160,31 @@ class PublisherTests(unittest.TestCase):
         self.assertIn("GENERATED FILE", overview)
         self.assertTrue((output_dir / "rd_audit_style.sty").is_file())
 
+    def test_renders_dynamic_annual_overview_without_instructional_copy(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        for expected in (
+            "C360 Example Platform", "acceptance-state recovery",
+            "durable delivery recovery", "RUN-2026-001", "RUN-2026-002",
+            "routine administration interface", "Example Engineer",
+            "recovery background review",
+        ):
+            self.assertIn(expected, overview)
+        self.assertLess(overview.index("RUN-2026-001"), overview.index("RUN-2026-002"))
+        for forbidden in (
+            "Uncertainty statement template", "Project narrative template",
+            "Name placeholder", "Service placeholder", "Describe the software product",
+            "Audit readiness checklist", "[Describe the technical unknown.]",
+        ):
+            self.assertNotIn(forbidden, overview)
+        self.assertNotIn(r"\\EV-", overview)
+        self.assertNotIn(r"\textbf{Contractors:} \RDNotApplicable", overview)
+        self.assertNotIn(r"\RDEndMatter", overview)
+        self.assertIn("Annual technical summary and evidence navigation record", overview)
+
     def test_renders_dynamic_experiments_in_chronological_order(self) -> None:
         sources = load_sources(self.input_dir)
         output_dir = Path(self.temporary_directory.name) / "generated"
@@ -186,6 +226,16 @@ class PublisherTests(unittest.TestCase):
             "No controlled variable was available because the run observed an external provider state.",
             notebook,
         )
+
+    def test_publish_scripts_stage_both_generated_and_pdf_outputs(self) -> None:
+        for filename in ("publish.sh", "publish.zsh"):
+            script = (PIPELINE_ROOT / filename).read_text(encoding="utf-8")
+            with self.subTest(filename=filename):
+                self.assertIn(".publish-stage.", script)
+                self.assertIn('--generated "$stage_generated"', script)
+                self.assertIn('--outdir "$stage_output"', script)
+                self.assertIn('mv "$stage_generated" "$generated_dir"', script)
+                self.assertIn('mv "$stage_output" "$output_dir"', script)
 
 
 if __name__ == "__main__":

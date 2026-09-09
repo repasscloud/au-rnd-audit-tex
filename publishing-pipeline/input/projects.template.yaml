@@ -1,0 +1,19 @@
+# Illustrative structure only. Never loaded.
+projects:
+  - id: RND-2026-01
+    name: "[Project name]"
+    period_start: "YYYY-MM-DD"
+    period_end: "YYYY-MM-DD"
+    lead_person_ref: P-001
+    technical_focus: "[Focus]"
+    business_objective: {state: provided, content: "[Objective]"}
+    technical_problem: "[Problem]"
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001]
+    activity_refs: [ACT-2026-001]
+    contributor_refs: [P-001]
+    evidence_refs: [EV-0001]
+    repositories: ["[Repository]"]
+    experimental_strategy: "[Strategy]"
+    annual_outcome: "[Outcome]"
+    unresolved_matters: ["[Unresolved matter]"]

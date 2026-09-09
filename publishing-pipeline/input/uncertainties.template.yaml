@@ -1,0 +1,14 @@
+# Illustrative structure only. Never loaded.
+uncertainties:
+  - id: UT-01
+    title: "[Title]"
+    area: "[Area]"
+    statement: "[Technical uncertainty]"
+    outcome_not_determinable_reason: "[Reason]"
+    competent_professional_basis: "[Basis]"
+    new_knowledge_sought: "[Knowledge sought]"
+    background_evidence_refs: [EV-0001]
+    project_refs: [RND-2026-01]
+    status: open
+    year_outcome: "[Year outcome]"
+    unresolved_aspects: ["[Unresolved aspect]"]

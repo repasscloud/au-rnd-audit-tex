@@ -11,6 +11,10 @@ pipeline_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 generated_dir="$pipeline_dir/generated"
 output_dir="$pipeline_dir/output"
 venv_dir="$pipeline_dir/.venv"
+stage_dir="$(mktemp -d "$pipeline_dir/.publish-stage.XXXXXX")"
+stage_generated="$stage_dir/generated"
+stage_output="$stage_dir/output"
+trap 'rm -rf "$stage_dir"' EXIT
 
 command -v python3 >/dev/null || { echo "python3 is required." >&2; exit 1; }
 command -v tectonic >/dev/null || { echo "tectonic is required." >&2; exit 1; }
@@ -23,20 +27,20 @@ fi
 "$venv_dir/bin/python" "$pipeline_dir/scripts/publisher.py" \
   --input "$pipeline_dir/input" \
   --templates "$pipeline_dir/templates" \
-  --generated "$generated_dir"
+  --generated "$stage_generated"
 
 shopt -s nullglob
-tex_files=("$generated_dir"/*.tex)
+tex_files=("$stage_generated"/*.tex)
 if (( ${#tex_files[@]} != 7 )); then
   echo "Expected 7 generated TeX documents, found ${#tex_files[@]}." >&2
   exit 1
 fi
 
-mkdir -p "$output_dir"
+mkdir -p "$stage_output"
 for tex_file in "${tex_files[@]}"; do
   echo "Compiling $(basename "$tex_file")"
   build_log="$(mktemp)"
-  if ! tectonic --outdir "$output_dir" "$tex_file" >"$build_log" 2>&1; then
+  if ! tectonic --outdir "$stage_output" "$tex_file" >"$build_log" 2>&1; then
     cat "$build_log" >&2
     rm -f "$build_log"
     exit 1
@@ -49,5 +53,24 @@ for tex_file in "${tex_files[@]}"; do
   fi
   rm -f "$build_log"
 done
+
+cp "$generated_dir/.gitkeep" "$stage_generated/.gitkeep"
+cp "$output_dir/.gitkeep" "$stage_output/.gitkeep"
+backup_generated="$stage_dir/generated.previous"
+backup_output="$stage_dir/output.previous"
+mv "$generated_dir" "$backup_generated"
+mv "$output_dir" "$backup_output"
+if ! mv "$stage_generated" "$generated_dir"; then
+  mv "$backup_generated" "$generated_dir"
+  mv "$backup_output" "$output_dir"
+  exit 1
+fi
+if ! mv "$stage_output" "$output_dir"; then
+  rm -rf "$generated_dir"
+  mv "$backup_generated" "$generated_dir"
+  mv "$backup_output" "$output_dir"
+  exit 1
+fi
+rm -rf "$backup_generated" "$backup_output"
 
 echo "Published 7 PDFs to $output_dir with no warnings."

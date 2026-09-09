@@ -1,0 +1,26 @@
+# Illustrative structure only. This file is never loaded as active evidence.
+program:
+  product: {name: "[Product name]", description: "[Description]", development_context: "[Context]"}
+  technical_objective: {statement: "[Technical objective]", new_knowledge_sought: "[Knowledge sought]"}
+  commercial_context: {state: provided, content: "[Commercial context]"}
+  scope:
+    period_start: "YYYY-MM-DD"
+    period_end: "YYYY-MM-DD"
+    repositories: ["[Repository]"]
+    included_work_summary: "[Included work]"
+    outside_boundary_summary: "[Outside-boundary work]"
+  baseline:
+    summary: "[Technical baseline]"
+    existing_knowledge: [{description: "[Known approach]", evidence_refs: [EV-0001]}]
+    approaches_reviewed: [{description: "[Approach]", outcome: "[Outcome]", evidence_refs: [EV-0001]}]
+    prior_internal_work: {state: no_data}
+    standards_and_constraints: {state: no_data}
+  annual_synthesis:
+    progression_summary: "[Progression]"
+    knowledge_outcome: "[Outcome]"
+    unresolved_matters: ["[Unresolved matter]"]
+    limitations: ["[Limitation]"]
+  applicability:
+    labour_summary: {state: applicable}
+    infrastructure_summary: {state: applicable}
+    contractor_summary: {state: not_applicable, reason: "[Reason]"}

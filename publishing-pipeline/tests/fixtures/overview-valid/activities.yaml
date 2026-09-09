@@ -1,0 +1,27 @@
+activities:
+  - id: ACT-2026-002
+    title: Example only - routine administration interface
+    classification: outside_rnd_boundary
+    classification_owner: P-001
+    period_start: 2026-01-20
+    period_end: 2026-01-21
+    description: Example only - applied established interface components.
+    rationale: Example only - the outcome followed documented framework behaviour and did not test a hypothesis.
+    project_refs: [RND-2026-01]
+    uncertainty_refs: []
+    experiment_refs: []
+    person_refs: [P-001]
+    evidence_refs: {state: no_data}
+  - id: ACT-2026-001
+    title: Example only - controlled interruption experiments
+    classification: candidate_experimental
+    classification_owner: P-001
+    period_start: 2026-07-14
+    period_end: 2026-07-15
+    description: Example only - executed controlled interruption runs.
+    rationale: Example only - directly tested the supplied recovery hypothesis.
+    project_refs: [RND-2026-01]
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001, RUN-2026-002]
+    person_refs: [P-001, P-002]
+    evidence_refs: [EV-0100]

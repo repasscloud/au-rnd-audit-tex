@@ -1,1 +1,2 @@
 run_id,sequence,kind,metric,baseline_value,observed_value,unit,notes,evidence_ref
+RUN-2026-001,1,quantitative,p95 response latency,820,310,milliseconds,Measured under the declared load profile,EV-0001

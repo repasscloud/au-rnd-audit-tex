@@ -1,0 +1,27 @@
+activities:
+  - id: ACT-2026-001
+    title: Illustrative example only - controlled cache experiment
+    classification: candidate_experimental
+    classification_owner: P-001
+    period_start: 2026-07-14
+    period_end: 2026-07-14
+    description: Illustrative example only - executed the declared load profile against the optimised build.
+    rationale: Illustrative example only - the activity directly tested the supplied pre-run hypothesis.
+    project_refs: [RND-2026-01]
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001]
+    person_refs: [P-001]
+    evidence_refs: [EV-0001]
+  - id: ACT-2026-002
+    title: Illustrative example only - routine release preparation
+    classification: outside_rnd_boundary
+    classification_owner: P-001
+    period_start: 2026-07-14
+    period_end: 2026-07-14
+    description: Illustrative example only - ordinary release preparation is shown separately from the experiment.
+    rationale: Illustrative example only - no separate technical hypothesis or experimental observation was supplied for this activity.
+    project_refs: [RND-2026-01]
+    uncertainty_refs: []
+    experiment_refs: []
+    person_refs: [P-001]
+    evidence_refs: {state: no_data}

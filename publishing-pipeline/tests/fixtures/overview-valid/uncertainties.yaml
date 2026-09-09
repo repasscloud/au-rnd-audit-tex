@@ -1,0 +1,14 @@
+uncertainties:
+  - id: UT-01
+    title: Example only - acceptance-state recovery
+    area: Distributed systems
+    statement: Example only - it was uncertain whether recovery could avoid duplicate submission after interruption.
+    outcome_not_determinable_reason: Example only - available interfaces did not expose a decisive acceptance state.
+    competent_professional_basis: Example only - documentation and prior tests did not determine the behaviour.
+    new_knowledge_sought: Example only - recovery behaviour at each interruption boundary.
+    background_evidence_refs: [EV-0100, EV-0101]
+    project_refs: [RND-2026-01]
+    status: partly_resolved
+    year_outcome: Example only - local durability was resolved while provider acceptance remained uncertain.
+    unresolved_aspects:
+      - Example only - ambiguous external acceptance window.

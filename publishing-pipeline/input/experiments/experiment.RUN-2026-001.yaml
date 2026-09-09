@@ -1,0 +1,43 @@
+experiment:
+  id: RUN-2026-001
+  title: Evaluate response latency after cache optimisation
+  project_ref: RND-2026-01
+  uncertainty_refs:
+    - UT-01
+  started_at: 2026-07-14T09:30:00+09:30
+  ended_at: 2026-07-14T12:10:00+09:30
+  status: confirmed
+  engineers:
+    - person_ref: P-001
+      role: experiment lead
+  objective: Determine whether the cache optimisation reduces p95 response latency under the declared load profile.
+  background:
+    summary: The existing implementation produced a measured p95 response latency of 820 milliseconds, and the effect of the proposed cache optimisation under the same load profile was unknown.
+    research_refs:
+      - EV-0001
+  hypothesis:
+    statement: Applying the cache optimisation will reduce p95 response latency below 400 milliseconds under the declared load profile.
+    formed_at: 2026-07-13T16:20:00+09:30
+    basis_refs:
+      - EV-0001
+  design:
+    independent_variables:
+      - Cache optimisation enabled for the experiment build.
+    controlled_variables:
+      - Application build other than the cache optimisation.
+      - Test dataset and declared load profile.
+      - Test environment resource allocation.
+    observed_variables:
+      - p95 response latency in milliseconds.
+    acceptance_criteria:
+      - Measured p95 response latency is below 400 milliseconds.
+    failure_triggers:
+      - Measured p95 response latency is 400 milliseconds or higher.
+      - The run ends with a processing error that prevents a valid measurement.
+  method: Run the declared load profile against the optimised build in the controlled test environment and compare the measured p95 response latency with the recorded 820 millisecond baseline.
+  evaluation: The measured p95 response latency was 310 milliseconds, which was below the pre-run acceptance threshold of 400 milliseconds and lower than the 820 millisecond baseline.
+  conclusion: The observations confirmed the hypothesis for the declared build, environment, dataset, and load profile.
+  next_actions:
+    - Repeat the experiment against the next release candidate to determine whether the result remains reproducible.
+  unexpected_behaviour:
+    state: no_data

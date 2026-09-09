@@ -1,0 +1,21 @@
+projects:
+  - id: RND-2026-01
+    name: Example only - durable delivery recovery
+    period_start: 2026-07-01
+    period_end: 2027-06-30
+    lead_person_ref: P-001
+    technical_focus: Example only - interruption-safe recovery and reconciliation.
+    business_objective:
+      state: provided
+      content: Example only - improve operational delivery reliability.
+    technical_problem: Example only - external acceptance could become ambiguous after interruption.
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001, RUN-2026-002]
+    activity_refs: [ACT-2026-001, ACT-2026-002]
+    contributor_refs: [P-001, P-002]
+    evidence_refs: [EV-0100]
+    repositories: [example/c360]
+    experimental_strategy: Example only - vary interruption points while holding the test state constant.
+    annual_outcome: Example only - local recovery worked in tested windows while one provider state remained unresolved.
+    unresolved_matters:
+      - Example only - provider acceptance ambiguity.

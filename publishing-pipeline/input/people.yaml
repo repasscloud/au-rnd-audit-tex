@@ -1,0 +1,9 @@
+people:
+  - id: P-001
+    name: Illustrative example person P-001
+    role: Experiment lead
+    engagement_type: Illustrative example only - relationship not supplied
+    technical_responsibilities: [Illustrative example only - experiment execution and evaluation]
+    project_refs: [RND-2026-01]
+    activity_refs: [ACT-2026-001, ACT-2026-002]
+    evidence_refs: {state: no_data}

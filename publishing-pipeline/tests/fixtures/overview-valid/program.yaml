@@ -1,0 +1,47 @@
+program:
+  product:
+    name: C360 Example Platform
+    description: Example only - a multi-tenant travel operations platform.
+    development_context: Example only - the platform was being extended with interruption-safe processing.
+  technical_objective:
+    statement: Example only - determine whether queued work can recover without duplicate external submissions.
+    new_knowledge_sought: Example only - establish recovery behaviour at defined interruption points.
+  commercial_context:
+    state: provided
+    content: Example only - reliable processing supports operational onboarding.
+  scope:
+    period_start: 2026-07-01
+    period_end: 2027-06-30
+    repositories:
+      - example/c360
+    included_work_summary: Example only - controlled recovery experiments and their direct preparation were included.
+    outside_boundary_summary: Example only - routine interface work and ordinary releases were kept outside the experimental boundary.
+  baseline:
+    summary: Example only - queued state was durable but external acceptance after interruption was not established.
+    existing_knowledge:
+      - description: Example only - transactional outbox behaviour was documented.
+        evidence_refs: [EV-0100]
+    approaches_reviewed:
+      - description: Example only - provider retry and reconciliation documentation was reviewed.
+        outcome: Example only - it did not expose a decisive acceptance contract.
+        evidence_refs: [EV-0101]
+    prior_internal_work:
+      state: no_data
+    standards_and_constraints:
+      state: provided
+      items:
+        - description: Example only - tenant isolation constrained the test environment.
+          evidence_refs: [EV-0100]
+  annual_synthesis:
+    progression_summary: Example only - successive runs narrowed the unresolved recovery window.
+    knowledge_outcome: Example only - durable local recovery was observed while an external acceptance state remained unresolved.
+    unresolved_matters:
+      - Example only - provider-side acceptance ambiguity requires further work.
+    limitations:
+      - Example only - outcomes apply only to the declared builds and environments.
+  applicability:
+    labour_summary: {state: applicable}
+    infrastructure_summary: {state: applicable}
+    contractor_summary:
+      state: not_applicable
+      reason: Example only - no contractors participated in the recorded program.

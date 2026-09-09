@@ -1,0 +1,49 @@
+program:
+  product:
+    name: Cinturon360 illustrative example
+    description: Illustrative example only - a multi-tenant travel operations platform.
+    development_context: Illustrative example only - this record demonstrates how platform-level technical work is summarised.
+  technical_objective:
+    statement: Illustrative example only - determine whether a cache optimisation can reduce response latency under a declared load profile.
+    new_knowledge_sought: Illustrative example only - establish the observed latency effect within the declared build, dataset, environment, and load profile.
+  commercial_context:
+    state: provided
+    content: Illustrative example only - response latency can affect the operating experience of platform users.
+  scope:
+    period_start: 2026-07-01
+    period_end: 2027-06-30
+    repositories: [Illustrative example only - C360 application repository]
+    included_work_summary: Illustrative example only - the overview includes the supplied cache experiment and its directly recorded preparation and evaluation.
+    outside_boundary_summary: Illustrative example only - routine interface implementation and ordinary release activity are explicitly outside the experimental boundary.
+  baseline:
+    summary: Illustrative example only - the supplied experiment records an 820 millisecond p95 response-latency baseline before the optimisation.
+    existing_knowledge:
+      - description: Illustrative example only - the existing implementation and declared load profile supplied the baseline.
+        evidence_refs: [EV-0100]
+    approaches_reviewed:
+      - description: Illustrative example only - the proposed cache optimisation was identified for controlled comparison.
+        outcome: Illustrative example only - its effect under the declared conditions could not be taken from the baseline record.
+        evidence_refs: [EV-0101]
+    prior_internal_work: {state: no_data}
+    standards_and_constraints:
+      state: provided
+      items:
+        - description: Illustrative example only - the build, dataset, load profile, and resource allocation were controlled.
+          evidence_refs: [EV-0101]
+  annual_synthesis:
+    progression_summary: Illustrative example only - the active source contains one completed run comparing the optimised build with the recorded baseline.
+    knowledge_outcome: Illustrative example only - the supplied observation supports the hypothesis only for the declared experiment conditions.
+    unresolved_matters:
+      - Illustrative example only - reproducibility against later release candidates remains untested.
+    limitations:
+      - Illustrative example only - the result must not be generalised beyond the declared build, environment, dataset, and load profile.
+  applicability:
+    labour_summary:
+      state: not_applicable
+      reason: Illustrative example only - no labour rows were supplied.
+    infrastructure_summary:
+      state: not_applicable
+      reason: Illustrative example only - no infrastructure rows were supplied.
+    contractor_summary:
+      state: not_applicable
+      reason: Illustrative example only - no contractor records were supplied.

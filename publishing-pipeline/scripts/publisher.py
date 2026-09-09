@@ -10,6 +10,7 @@ from typing import Any
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from experiments import load_experiment_sources
+from overview import load_overview_sources
 from validation import SourceValidationError, load_strict_csv, load_yaml_mapping
 
 
@@ -106,6 +107,16 @@ def _validate_infrastructure_costs(rows: list[dict[str, str]]) -> None:
 
 def load_sources(input_dir: Path) -> dict[str, Any]:
     claim = load_yaml_mapping(input_dir / "claim.yaml")
+    def reject_placeholders(value: Any, path: str = "") -> None:
+        if isinstance(value, str) and re.fullmatch(r"(?:\[[^\]]+\]|xxx|tbd)", value.strip(), re.IGNORECASE):
+            raise SourceValidationError(f"claim.yaml contains placeholder text at {path}")
+        if isinstance(value, dict):
+            for key, item in value.items():
+                reject_placeholders(item, f"{path}.{key}".strip("."))
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                reject_placeholders(item, f"{path}[{index}]")
+    reject_placeholders(claim)
     document = claim.get("document")
     if not isinstance(document, dict):
         raise SourceValidationError("claim.yaml requires a document mapping")
@@ -116,6 +127,7 @@ def load_sources(input_dir: Path) -> dict[str, Any]:
 
     sources: dict[str, Any] = dict(claim)
     sources["experiments"] = load_experiment_sources(input_dir)
+    sources["overview"] = load_overview_sources(input_dir, sources["experiments"])
     timesheets = load_strict_csv(input_dir / "timesheets.csv", CSV_SCHEMAS["timesheets.csv"])
     infrastructure_costs = load_strict_csv(
         input_dir / "infrastructure-costs.csv",

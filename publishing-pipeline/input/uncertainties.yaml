@@ -1,0 +1,14 @@
+uncertainties:
+  - id: UT-01
+    title: Illustrative example only - cache latency effect
+    area: Performance engineering
+    statement: Illustrative example only - it was uncertain whether the proposed cache optimisation could reduce p95 response latency below the supplied threshold under the declared load profile.
+    outcome_not_determinable_reason: Illustrative example only - the baseline described the existing implementation but did not measure the proposed optimisation.
+    competent_professional_basis: Illustrative example only - this statement summarises the supplied experiment background and is not an eligibility opinion.
+    new_knowledge_sought: Illustrative example only - the observed p95 response latency after enabling the optimisation under controlled conditions.
+    background_evidence_refs: [EV-0100, EV-0101]
+    project_refs: [RND-2026-01]
+    status: resolved
+    year_outcome: Illustrative example only - the supplied run recorded 310 milliseconds against a threshold below 400 milliseconds.
+    unresolved_aspects:
+      - Illustrative example only - reproducibility outside the declared conditions remains unknown.

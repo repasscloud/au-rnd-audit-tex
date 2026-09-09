@@ -1,0 +1,43 @@
+# Copy this file without the .template segment, then replace every example value.
+# The filename run ID must exactly match experiment.id.
+experiment:
+  id: RUN-2026-001
+  title: Completed experiment example
+  project_ref: RND-2026-01
+  uncertainty_refs:
+    - UT-01
+  started_at: 2026-07-14T09:30:00+09:30
+  ended_at: 2026-07-14T12:10:00+09:30
+  status: mixed
+  engineers:
+    - person_ref: P-001
+      role: experiment lead
+  objective: State the specific technical question this run was intended to answer.
+  background:
+    summary: Describe the prior system state and why the result could not be determined in advance.
+    research_refs:
+      - EV-0001
+  hypothesis:
+    statement: State the testable technical expectation formed before the experiment began.
+    formed_at: 2026-07-13T16:20:00+09:30
+    basis_refs:
+      - EV-0001
+  design:
+    independent_variables:
+      - State what the run deliberately changed.
+    controlled_variables:
+      - State what remained constant.
+    observed_variables:
+      - State what was measured or observed.
+    acceptance_criteria:
+      - State the criterion established before execution.
+    failure_triggers:
+      - State the condition that would contradict or limit the hypothesis.
+  method: Describe the reproducible procedure, build, environment, instrumentation, and analysis method.
+  evaluation: Explain what the observations mean and distinguish measured facts from inference.
+  conclusion: State whether and why the observations confirmed, rejected, partly supported, or did not resolve the hypothesis.
+  next_actions:
+    - State a follow-up run, design change, instrumentation need, or decision.
+  unexpected_behaviour:
+    state: provided
+    content: Describe the observed anomaly or failure mode.

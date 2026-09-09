@@ -1,0 +1,15 @@
+# Illustrative structure only. Never loaded.
+activities:
+  - id: ACT-2026-001
+    title: "[Activity]"
+    classification: candidate_experimental
+    classification_owner: P-001
+    period_start: "YYYY-MM-DD"
+    period_end: "YYYY-MM-DD"
+    description: "[Description]"
+    rationale: "[Classification rationale]"
+    project_refs: [RND-2026-01]
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001]
+    person_refs: [P-001]
+    evidence_refs: [EV-0001]

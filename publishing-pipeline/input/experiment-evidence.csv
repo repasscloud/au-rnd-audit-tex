@@ -1,1 +1,2 @@
 evidence_id,run_id,type,title,location,captured_at,notes
+EV-0001,RUN-2026-001,test-report,Load-profile experiment report,evidence/experiments/RUN-2026-001/report.txt,2026-07-14T12:05:00+09:30,Contains the run configuration latency measurements and processing outcome

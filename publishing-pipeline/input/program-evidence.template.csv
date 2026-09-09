@@ -1,0 +1,2 @@
+evidence_id,type,title,location,captured_at,period_start,period_end,notes
+EV-0001,research-note,Illustrative evidence title,evidence/example.md,2026-07-01T09:00:00+09:30,2026-07-01,2026-07-01,Illustrative note

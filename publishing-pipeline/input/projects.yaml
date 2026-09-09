@@ -1,0 +1,21 @@
+projects:
+  - id: RND-2026-01
+    name: Illustrative example only - cache response optimisation
+    period_start: 2026-07-13
+    period_end: 2026-07-14
+    lead_person_ref: P-001
+    technical_focus: Illustrative example only - response latency under a controlled load profile.
+    business_objective:
+      state: provided
+      content: Illustrative example only - improve responsiveness under the declared operating profile.
+    technical_problem: Illustrative example only - the latency effect of the proposed optimisation under controlled conditions was not established in the supplied record.
+    uncertainty_refs: [UT-01]
+    experiment_refs: [RUN-2026-001]
+    activity_refs: [ACT-2026-001, ACT-2026-002]
+    contributor_refs: [P-001]
+    evidence_refs: [EV-0100, EV-0101]
+    repositories: [Illustrative example only - C360 application repository]
+    experimental_strategy: Illustrative example only - enable the optimisation while holding the declared build context, dataset, load profile, and resource allocation constant.
+    annual_outcome: Illustrative example only - the recorded p95 latency was below the pre-run threshold for the declared conditions.
+    unresolved_matters:
+      - Illustrative example only - later-release reproducibility remains unresolved.

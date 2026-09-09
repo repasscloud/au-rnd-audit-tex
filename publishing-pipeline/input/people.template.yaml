@@ -1,0 +1,10 @@
+# Illustrative structure only. Never loaded.
+people:
+  - id: P-001
+    name: "[Name]"
+    role: "[Role]"
+    engagement_type: employee
+    technical_responsibilities: ["[Responsibility]"]
+    project_refs: [RND-2026-01]
+    activity_refs: [ACT-2026-001]
+    evidence_refs: {state: no_data}

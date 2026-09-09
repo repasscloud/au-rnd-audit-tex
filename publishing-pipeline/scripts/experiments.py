@@ -64,6 +64,9 @@ PROJECT_ID_PATTERN = re.compile(r"RND-\d{4}-\d{2}")
 UNCERTAINTY_ID_PATTERN = re.compile(r"UT-\d{2}")
 PERSON_ID_PATTERN = re.compile(r"P-\d{3}")
 EVIDENCE_ID_PATTERN = re.compile(r"EV-\d{4}")
+SPLIT_EXPERIMENT_FILENAME_PATTERN = re.compile(
+    r"experiment\.(RUN-\d{4}-\d{3})\.yaml"
+)
 
 
 def _is_placeholder(value: str) -> bool:
@@ -547,8 +550,53 @@ def validate_and_normalize_experiments(
     return normalized
 
 
+def _load_experiment_yaml_sources(input_dir: Path) -> dict[str, list[dict[str, Any]]]:
+    combined_path = input_dir / "experiments.yaml"
+    split_dir = input_dir / "experiments"
+    split_paths: list[tuple[Path, str]] = []
+
+    if split_dir.is_dir():
+        for path in sorted(split_dir.glob("experiment.*.yaml")):
+            if path.name.endswith(".template.yaml"):
+                continue
+            match = SPLIT_EXPERIMENT_FILENAME_PATTERN.fullmatch(path.name)
+            if match is None:
+                raise SourceValidationError(
+                    f"invalid split experiment filename: {path.name}; "
+                    "expected experiment.RUN-YYYY-NNN.yaml"
+                )
+            split_paths.append((path, match.group(1)))
+
+    if combined_path.is_file() and split_paths:
+        raise SourceValidationError(
+            "cannot use both experiments.yaml and split experiment files"
+        )
+    if combined_path.is_file():
+        return load_yaml_mapping(combined_path)
+    if not split_paths:
+        raise SourceValidationError(
+            "Missing experiment source: supply experiments.yaml or "
+            "experiments/experiment.RUN-YYYY-NNN.yaml files"
+        )
+
+    experiments: list[dict[str, Any]] = []
+    for path, filename_id in split_paths:
+        document = load_yaml_mapping(path)
+        experiment = document.get("experiment")
+        if not isinstance(experiment, dict):
+            raise SourceValidationError(f"{path.name} requires an experiment mapping")
+        experiment_id = experiment.get("id")
+        if experiment_id != filename_id:
+            raise SourceValidationError(
+                f"{path.name} filename ID {filename_id} must match "
+                f"experiment.id {experiment_id}"
+            )
+        experiments.append(experiment)
+    return {"experiments": experiments}
+
+
 def load_experiment_sources(input_dir: Path) -> list[dict[str, Any]]:
-    experiment_source = load_yaml_mapping(input_dir / "experiments.yaml")
+    experiment_source = _load_experiment_yaml_sources(input_dir)
     results = load_strict_csv(
         input_dir / "experiment-results.csv",
         EXPERIMENT_CSV_SCHEMAS["experiment-results.csv"],
