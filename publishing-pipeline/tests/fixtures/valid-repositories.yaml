@@ -1,0 +1,23 @@
+repository_evidence:
+  state: applicable
+  coverage_statement: Example only - application source-control coverage for the declared project and period.
+  repositories:
+    - id: REPO-001
+      name: Example only - C360 application repository
+      project_refs: [RND-2026-01]
+      period_start: 2026-07-01
+      period_end: 2027-06-30
+      acquisition: {mode: exported}
+      expected_head: 0123456789abcdef0123456789abcdef01234567
+      history:
+        completeness: complete
+        limitation: {state: no_data}
+      identity_mappings:
+        - id: GITID-0001
+          git_name_exact: Example Author
+          git_email_sha256: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          person_ref: P-001
+          basis: Example only - confirmed by the accountable record owner.
+          evidence_refs: [EV-0100]
+          review_ref: REV-2026-001
+          status: confirmed

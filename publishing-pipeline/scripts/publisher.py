@@ -12,6 +12,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from experiments import load_experiment_sources
 from overview import load_overview_sources
 from claim_mapping import build_claim_mapping, load_reviews
+from git_evidence import load_git_evidence
 from validation import SourceValidationError, load_strict_csv, load_yaml_mapping
 
 
@@ -152,6 +153,9 @@ def load_sources(input_dir: Path) -> dict[str, Any]:
     sources["infrastructure_costs"] = infrastructure_costs
     sources["reviews"] = load_reviews(input_dir)
     sources["claim_mapping"] = build_claim_mapping(sources["overview"], sources["experiments"], timesheets, infrastructure_costs, sources["reviews"])
+    sources["git_evidence"] = load_git_evidence(
+        input_dir, sources["overview"], sources["experiments"], sources["claim_mapping"]
+    )
     return sources
 
 

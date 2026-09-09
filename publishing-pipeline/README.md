@@ -27,6 +27,9 @@ Each command prepares a local Python virtual environment, installs the two requi
 - `input/timesheets.csv`: high-volume labour allocation rows.
 - `input/infrastructure-costs.csv`: high-volume infrastructure and tooling rows.
 - `input/reviews.yaml` or `input/reviews/review.REV-YYYY-NNN.yaml`: accountable human-review decisions.
+- `input/repositories.yaml`: repository scope, acquisition, limitations, and explicit identity mappings.
+- `input/repository-events.csv`: exported immutable repository and engineering facts.
+- `input/repository-interpretations.yaml`: curated supplier interpretations and technical-record links.
 - `templates/`: data-aware LaTeX templates. Edit these only when changing document structure or presentation.
 
 ## Files the pipeline owns
@@ -64,8 +67,14 @@ Document 03 derives a concise traceability matrix from the overview, experiment,
 review, timesheet, and infrastructure sources. See the
 [03 Claim Mapping Register authoring guide](docs/03-claim-mapping-register/README.md).
 
+## Git Evidence Appendix authoring
+
+Document 04 combines validated exported facts or pinned read-only local Git
+inspection with separately supplied interpretations. See the
+[04 Git Evidence Appendix authoring guide](docs/04-git-evidence-appendix/README.md).
+
 ## Remaining baseline
 
-The git appendix, weekly timesheets, infrastructure worksheets, and annual claim
-pack still contain instructional placeholders. Their proposed contracts are in
+The weekly timesheets, infrastructure worksheets, and annual claim pack still
+contain instructional placeholders. Their proposed contracts are in
 `docs/superpowers/specs/2026-09-08-published-pdf-data-contract-design.md`.

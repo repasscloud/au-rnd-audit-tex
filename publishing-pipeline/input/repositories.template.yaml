@@ -1,0 +1,16 @@
+# Illustrative structure only. Never loaded.
+repository_evidence:
+  state: applicable
+  coverage_statement: "[Describe repository coverage]"
+  repositories:
+    - id: REPO-001
+      name: "[Repository name]"
+      project_refs: [RND-2026-01]
+      period_start: "YYYY-MM-DD"
+      period_end: "YYYY-MM-DD"
+      acquisition: {mode: exported}
+      expected_head: "[Full commit hash]"
+      history:
+        completeness: complete
+        limitation: {state: no_data}
+      identity_mappings: []

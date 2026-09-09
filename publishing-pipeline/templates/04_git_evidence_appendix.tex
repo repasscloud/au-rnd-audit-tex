@@ -1,84 +1,89 @@
 \documentclass[11pt]{article}
 \usepackage{rd_audit_style}
-
 \RDDocumentTitle{Git Evidence Appendix}
 \RDCompany{<< document.company >>}
 \RDFY{<< document.financial_year >>}
 \RDPreparedBy{<< document.prepared_by >>}
 \RDVersion{<< document.version >>}
 \RDConfidentiality{<< document.confidentiality >>}
-
 \begin{document}
 \RDTitlePage
 \tableofcontents
 \clearpage
-
-\section{Purpose}
-\RDSectionIntro{This appendix is designed to import repository logs generated outside LaTeX so the claim pack can preserve a readable commit trail without manual copy and paste. Export the logs to plain-text files first, then compile this document.}
-
-\RDAuditNote{A git log is not enough by itself. It supports chronology and technical traceability, but should be paired with notebook entries, ticket references, benchmark results, diagrams, and expenditure schedules.}
-
-\section{Recommended export fields}
-\begin{lstlisting}
-%h | %ad | %an | %d | %s
-\end{lstlisting}
-
-\subsection{Example export command}
-\begin{lstlisting}
-git -C /path/to/repo log --since="2025-07-01" --until="2026-06-30" --date=short --pretty=format:"%h | %ad | %an | %d | %s" > evidence/git/repo-main.txt
-\end{lstlisting}
-
-\section{Repository imports}
-
-\subsection{Primary application repository}
-\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
-\IfFileExists{evidence/git/repo-main.txt}{%
-  \lstinputlisting{evidence/git/repo-main.txt}%
-}{%
-  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-main.txt}}%
-}
-
-\subsection{Shared library repository}
-\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
-\IfFileExists{evidence/git/repo-shared.txt}{%
-  \lstinputlisting{evidence/git/repo-shared.txt}%
-}{%
-  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-shared.txt}}%
-}
-
-\subsection{Infrastructure / deployment repository}
-\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
-\IfFileExists{evidence/git/repo-infra.txt}{%
-  \lstinputlisting{evidence/git/repo-infra.txt}%
-}{%
-  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-infra.txt}}%
-}
-
-\subsection{Mobile / client application repository}
-\RDSectionIntro{Export a plain-text git log into the referenced file path, then compile this document. If the file exists, it will be included automatically.}
-\IfFileExists{evidence/git/repo-mobile.txt}{%
-  \lstinputlisting{evidence/git/repo-mobile.txt}%
-}{%
-  \RDCallout{Pending evidence import}{Expected git evidence file: \texttt{evidence/git/repo-mobile.txt}}%
-}
-
-\section{Commit interpretation notes}
-\begin{RDChecklist}
-\item Highlight commit clusters that align with discrete experiments.
-\item Mark commits that were exploratory, benchmarking, instrumentation, or prototype related.
-\item Link major merge ranges back to notebook run IDs or project IDs.
-\item Exclude or separately note routine housekeeping, content-only changes, or unrelated operational work where appropriate.
-\end{RDChecklist}
-
-\section{Manual summary table for high-value commits}
-\rowcolors{2}{white}{RDSoft}
-\begin{xltabular}{\textwidth}{L{2.1cm}L{2.2cm}L{2.8cm}Y}
-\rowcolor{RDBand}
-\textbf{Commit} & \textbf{Date} & \textbf{Project / run ref} & \textbf{Why material to the R\&D record} \\
-{[hash]} & {[date]} & {[ref]} & {[Reason]} \\
-{[hash]} & {[date]} & {[ref]} & {[Reason]} \\
-\end{xltabular}
-\rowcolors{2}{}{}
-
-\RDEndMatter
+\section{Purpose and evidentiary boundary}
+\RDSectionIntro{This appendix provides a concise, auditable source-control chronology and evidence index. It connects captured engineering records to the supplied technical record without duplicating the Overview, Experiment Notebook, or Claim Mapping Register.}
+\RDAuditNote{Repository activity is supporting evidence, not proof that an activity was experimental or eligible. Commit messages are supplier-authored engineering records and may not completely state purpose. Passing tests, deployments, code complexity, commit counts, and change volume do not establish R\&D eligibility or effort.}
+<% if not git_evidence.is_applicable %>
+\section{Repository evidence applicability}
+\RDNotApplicable{<< git_evidence.reason >>}
+<% else %>
+\section{Repository coverage and scope}
+<< git_evidence.coverage_statement >>
+<% for repository in git_evidence.repositories %>
+\Needspace{12\baselineskip}
+\subsection{<< repository.id >>: << repository.name >>}
+\begin{description}
+\item[Projects] << repository.project_refs | join(', ') >>
+\item[Reporting scope] << repository.period_start >> to << repository.period_end >>
+\item[Acquisition] << repository.acquisition.mode >>
+\item[Expected head] \nolinkurl{<< repository.expected_head >>}
+\item[History completeness] << repository.history.completeness >>
+<% if repository.history.limitation.state == 'provided' %>\item[Limitation] << repository.history.limitation.content >> (Review: << repository.history.limitation.review_ref >>)<% else %>\item[Limitation] No data provided.<% endif %>
+<% if repository.observed %>\item[Observed local state] HEAD \texttt{<< repository.observed.head >>}; shallow: << repository.observed.shallow >>; detached: << repository.observed.detached >>; dirty: << repository.observed.dirty >><% endif %>
+\end{description}
+<% endfor %>
+\section{Immutable repository facts}
+<% for event in git_evidence.events %>
+\Needspace{9\baselineskip}
+\subsection{<< event.record_id >>: << event.record_type >>}
+\begin{description}
+\item[Repository] << event.repository_ref >>
+\item[Timestamp] \nolinkurl{<< event.effective_display >>}
+\item[Immutable identifier] \nolinkurl{<< event.immutable_identifier >>}
+\item[Recorded subject] << event.subject >>
+\item[Author identity] <% if event.author_person_ref %><< event.author_person_ref >><% else %>Unmapped repository identity<% endif %>
+\item[Committer identity] <% if event.committer_person_ref %><< event.committer_person_ref >><% else %>Unmapped repository identity<% endif %>
+\end{description}
+<% endfor %>
+\section{Supplier interpretations and traceability}
+\RDAuditNote{Every row below is a supplied interpretation. It is separate from immutable repository facts and does not certify eligibility, labour, cost, authorship, or causation.}
+<% if git_evidence.has_interpretations %>
+<% for item in git_evidence.interpretations %>
+\Needspace{10\baselineskip}
+\subsection{<< item.id >>: Supplier interpretation}
+\begin{description}
+\item[Repository records] << item.record_refs | join(', ') >>
+\item[Materiality] << item.materiality >>
+\item[Engineering context] << item.engineering_context | join(', ') >>
+\item[Interpretation] << item.interpretation >>
+\item[Owner] << item.interpretation_owner >>
+\item[Projects] <% if item.project_refs %><< item.project_refs | join(', ') >><% else %>No data provided.<% endif %>
+\item[Uncertainties] <% if item.uncertainty_refs %><< item.uncertainty_refs | join(', ') >><% else %>No data provided.<% endif %>
+\item[Activities] <% if item.activity_refs %><< item.activity_refs | join(', ') >><% else %>No data provided.<% endif %>
+\item[Experiments] <% if item.experiment_refs %><< item.experiment_refs | join(', ') >><% else %>No data provided.<% endif %>
+\item[Evidence / reviews] << item.evidence_refs | join(', ') >>; << item.review_refs | join(', ') >>
+\end{description}
+<% endfor %>
+<% else %>\RDNoData<% endif %>
+\section{Explicit repository identity mappings}
+\RDAuditNote{A name or email similarity never establishes identity. Only the explicit mappings below connect a repository identity to an internal person record. Author and committer identities remain separate.}
+<% if git_evidence.has_identity_mappings %>
+\small\rowcolors{2}{white}{RDSoft}
+\begin{xltabular}{\textwidth}{@{}L{2.0cm}L{2.0cm}L{2.7cm}L{1.8cm}Y@{}}
+\rowcolor{RDBand}\textbf{Mapping} & \textbf{Repository} & \textbf{Exact Git name} & \textbf{Person / status} & \textbf{Supplied basis} \\
+<% for mapping in git_evidence.identity_mappings %><< mapping.id >> & << mapping.repository_ref >> & << mapping.git_name_exact >> & << mapping.person_ref >> / << mapping.status >> & << mapping.basis >> \\
+<% endfor %>\end{xltabular}\rowcolors{2}{}{}\normalsize
+<% else %>\RDNoData<% endif %>
+\section{Coverage and integrity notes}
+\begin{itemize}
+\item Technical scope and activity classifications remain authoritative in documents 01 and 03.
+\item Experiment chronology, hypotheses, methods, observations, evaluations, and conclusions remain authoritative in document 02.
+\item Unmapped repository identities remain unmapped; the publisher does not infer people, labour, cost, activity, experiment, or eligibility attribution.
+\item Failed work, reverts, ordinary engineering, maintenance, abandoned work, and contradictory evidence remain visible when captured or supplied.
+\end{itemize}
+<% endif %>
+\clearpage
+\section*{Document control}
+\addcontentsline{toc}{section}{Document control}
+\RDMetaTable
 \end{document}

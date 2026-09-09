@@ -160,6 +160,26 @@ class PublisherTests(unittest.TestCase):
         self.assertIn("GENERATED FILE", overview)
         self.assertTrue((output_dir / "rd_audit_style.sty").is_file())
 
+    def test_renders_dynamic_git_appendix_without_legacy_instructions(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        appendix = (output_dir / "04_git_evidence_appendix.tex").read_text(encoding="utf-8")
+        for expected in (
+            "REPO-001", "GITREC-2026-000001", "0123456789ab",
+            "Record recovery experiment", "GITINT-2026-0001",
+            "Immutable repository facts", "Supplier interpretation",
+        ):
+            self.assertIn(expected, appendix)
+        for forbidden in (
+            "Recommended export fields", "Example export command",
+            "Primary application repository", "Pending evidence import",
+            "Manual summary table for high-value commits", "[hash]",
+        ):
+            self.assertNotIn(forbidden, appendix)
+        self.assertIn(r"\nolinkurl{2026-07-14T09:50:00+09:30}", appendix)
+
     def test_renders_dynamic_annual_overview_without_instructional_copy(self) -> None:
         sources = load_sources(self.input_dir)
         output_dir = Path(self.temporary_directory.name) / "generated"

@@ -1,0 +1,17 @@
+# Illustrative structure only. Never loaded.
+interpretations:
+  - id: GITINT-2026-0001
+    repository_ref: REPO-001
+    record_refs: [GITREC-2026-000001]
+    materiality: material
+    engineering_context: [candidate_experimental_support]
+    interpretation: "[Supplier-authored interpretation]"
+    interpretation_owner: P-001
+    project_refs: [RND-2026-01]
+    uncertainty_refs: [UT-01]
+    activity_refs: [ACT-2026-001]
+    experiment_refs: [RUN-2026-001]
+    person_refs: []
+    evidence_refs: [EV-0001]
+    review_refs: []
+    recorded_at: "YYYY-MM-DDTHH:MM:SS+HH:MM"
