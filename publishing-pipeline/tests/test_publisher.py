@@ -185,6 +185,75 @@ class PublisherTests(unittest.TestCase):
         self.assertNotIn(r"\RDEndMatter", overview)
         self.assertIn("Annual technical summary and evidence navigation record", overview)
 
+    def test_overview_renders_uncertainty_references_as_separate_lists(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        self.assertIn(
+            "\\textbf{Projects:}\n\\begin{itemize}\n\\item RND-2026-01\n\\end{itemize}",
+            overview,
+        )
+        self.assertIn(
+            "\\textbf{Evidence:}\n\\begin{itemize}\n\\item EV-0100\n\\item EV-0101\n\\end{itemize}",
+            overview,
+        )
+
+    def test_overview_renders_project_references_as_separate_lists(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        self.assertIn("\\textbf{Lead:} P-001", overview)
+        self.assertIn(
+            "\\textbf{Contributors:}\n\\begin{itemize}\n\\item P-001\n\\item P-002\n\\end{itemize}",
+            overview,
+        )
+        self.assertIn("\\textbf{Uncertainties:}\n\\begin{itemize}\n\\item UT-01\n\\end{itemize}", overview)
+        self.assertIn(
+            "\\textbf{Runs:}\n\\begin{itemize}\n\\item RUN-2026-001\n\\item RUN-2026-002\n\\end{itemize}",
+            overview,
+        )
+
+    def test_overview_renders_experiment_references_as_separate_lists(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        self.assertIn("\\textbf{Started:} 2026-07-14", overview)
+        self.assertIn("\\textbf{Project:} RND-2026-01", overview)
+        self.assertIn("\\textbf{Uncertainties:}\n\\begin{itemize}\n\\item UT-01\n\\end{itemize}", overview)
+        self.assertIn("\\textbf{Detailed record:} Experiment Notebook, RUN-2026-001.", overview)
+        self.assertIn(
+            "\\textbf{Evidence:}\n\\begin{itemize}\n\\item EV-0010\n\\end{itemize}",
+            overview,
+        )
+
+    def test_overview_renders_each_activity_reference_group_as_a_list(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        self.assertIn(
+            "\\textbf{Projects:}\n\\begin{itemize}\n\\item RND-2026-01\n\\end{itemize}",
+            overview,
+        )
+        self.assertIn("\\textbf{Uncertainties:}\n\\begin{itemize}\n\\item UT-01\n\\end{itemize}", overview)
+        self.assertIn("\\textbf{Experiments:}\n\\begin{itemize}\n\\item RUN-2026-001\n\\end{itemize}", overview)
+
+    def test_overview_keeps_repeated_record_openings_and_list_labels_with_content(self) -> None:
+        sources = load_sources(self.input_dir)
+        output_dir = Path(self.temporary_directory.name) / "generated"
+        render_documents(PIPELINE_ROOT / "templates", output_dir, sources)
+
+        overview = (output_dir / "01_overview_of_all_work.tex").read_text(encoding="utf-8")
+        self.assertGreaterEqual(overview.count(r"\Needspace{16\baselineskip}"), 3)
+        self.assertGreaterEqual(overview.count(r"\Needspace{4\baselineskip}"), 10)
+
     def test_renders_dynamic_experiments_in_chronological_order(self) -> None:
         sources = load_sources(self.input_dir)
         output_dir = Path(self.temporary_directory.name) / "generated"

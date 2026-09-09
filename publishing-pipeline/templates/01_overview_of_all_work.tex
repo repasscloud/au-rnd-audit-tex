@@ -65,14 +65,33 @@ structure and consistency; it does not determine legal R\&D eligibility.}
 \section{Technical knowledge gaps and uncertainties}
 <% for uncertainty in overview.uncertainties %>
 \subsection{<< uncertainty.id >>: << uncertainty.title >>}
-\textbf{Area and year status:} << uncertainty.area >>; << uncertainty.status >>.\\
-\textbf{Uncertainty:} << uncertainty.statement >>\\
-\textbf{Why the outcome was not determinable:} << uncertainty.outcome_not_determinable_reason >>\\
-\textbf{Competent-professional basis:} << uncertainty.competent_professional_basis >>\\
-\textbf{New knowledge sought:} << uncertainty.new_knowledge_sought >>\\
-\textbf{Year outcome:} << uncertainty.year_outcome >>\\
-\textbf{Projects:} << uncertainty.project_refs | join(', ') >>. \textbf{Evidence:} << uncertainty.background_evidence_refs | join(', ') >>.
-\textbf{Unresolved aspects}\begin{itemize}<% for item in uncertainty.unresolved_aspects %>\item << item >><% endfor %>\end{itemize}
+\textbf{Area and year status:} << uncertainty.area >>; << uncertainty.status >>.
+
+\textbf{Uncertainty:} << uncertainty.statement >>
+
+\textbf{Why the outcome was not determinable:} << uncertainty.outcome_not_determinable_reason >>
+
+\textbf{Competent-professional basis:} << uncertainty.competent_professional_basis >>
+
+\textbf{New knowledge sought:} << uncertainty.new_knowledge_sought >>
+
+\textbf{Year outcome:} << uncertainty.year_outcome >>
+
+\Needspace{4\baselineskip}
+\textbf{Projects:}
+\begin{itemize}
+<% for project_ref in uncertainty.project_refs %>\item << project_ref >>
+<% endfor %>\end{itemize}
+\Needspace{4\baselineskip}
+\textbf{Evidence:}
+\begin{itemize}
+<% for evidence_ref in uncertainty.background_evidence_refs %>\item << evidence_ref >>
+<% endfor %>\end{itemize}
+\Needspace{4\baselineskip}
+\textbf{Unresolved aspects:}
+\begin{itemize}
+<% for item in uncertainty.unresolved_aspects %>\item << item >>
+<% endfor %>\end{itemize}
 <% endfor %>
 
 \clearpage
@@ -86,9 +105,25 @@ structure and consistency; it does not determine legal R\&D eligibility.}
 \end{xltabular}\rowcolors{2}{}{}
 
 <% for project in overview.projects %>
+\Needspace{16\baselineskip}
 \subsection{<< project.id >>: << project.name >>}
-\textbf{Lead:} << project.lead_person_ref >>. \textbf{Contributors:} << project.contributor_refs | join(', ') >>.\\
-\textbf{Uncertainties:} << project.uncertainty_refs | join(', ') >>. \textbf{Runs:} << project.experiment_refs | join(', ') >>.\\
+\textbf{Lead:} << project.lead_person_ref >>
+
+\Needspace{4\baselineskip}
+\textbf{Contributors:}
+\begin{itemize}
+<% for person_ref in project.contributor_refs %>\item << person_ref >>
+<% endfor %>\end{itemize}
+\Needspace{4\baselineskip}
+\textbf{Uncertainties:}
+\begin{itemize}
+<% for uncertainty_ref in project.uncertainty_refs %>\item << uncertainty_ref >>
+<% endfor %>\end{itemize}
+\Needspace{4\baselineskip}
+\textbf{Runs:}
+\begin{itemize}
+<% for experiment_ref in project.experiment_refs %>\item << experiment_ref >>
+<% endfor %>\end{itemize}
 \textbf{Technical problem:} << project.technical_problem >>
 
 \textbf{Experimental strategy:} << project.experimental_strategy >>
@@ -96,7 +131,11 @@ structure and consistency; it does not determine legal R\&D eligibility.}
 \textbf{Annual outcome:} << project.annual_outcome >>
 
 <% if project.business_objective.has_data %>\textbf{Business objective:} << project.business_objective.content >><% else %>\RDNotApplicable{<< project.business_objective.reason >>}<% endif %>
-\textbf{Unresolved matters}\begin{itemize}<% for item in project.unresolved_matters %>\item << item >><% endfor %>\end{itemize}
+\Needspace{4\baselineskip}
+\textbf{Unresolved matters:}
+\begin{itemize}
+<% for item in project.unresolved_matters %>\item << item >>
+<% endfor %>\end{itemize}
 <% endfor %>
 
 \section{Systematic experimental progression}
@@ -104,12 +143,30 @@ structure and consistency; it does not determine legal R\&D eligibility.}
 sources. It preserves supplied statuses and conclusions while leaving detailed
 methods, execution events, and observations in document 02.}
 <% for run in overview.experiment_summaries %>
+\Needspace{16\baselineskip}
 \subsection{<< run.id >>: << run.title >>}
-\textbf{Started:} << run.started_date >>. \textbf{Project:} << run.project_ref >>.
-\textbf{Uncertainties:} << run.uncertainty_refs | join(', ') >>.
-\textbf{Status:} << run.status_label >>. \textbf{Observations:} << run.result_count >> (<< run.result_kinds | join(', ') >>).\\
-\textbf{<< run.conclusion_label >>:} << run.conclusion_text >>\\
-\textbf{Detailed record:} Experiment Notebook, << run.id >>. \textbf{Evidence:} << run.evidence_refs | join(', ') >>.
+\textbf{Started:} << run.started_date >>
+
+\textbf{Project:} << run.project_ref >>
+
+\Needspace{4\baselineskip}
+\textbf{Uncertainties:}
+\begin{itemize}
+<% for uncertainty_ref in run.uncertainty_refs %>\item << uncertainty_ref >>
+<% endfor %>\end{itemize}
+\textbf{Status:} << run.status_label >>.
+
+\textbf{Observations:} << run.result_count >> (<< run.result_kinds | join(', ') >>).
+
+\textbf{<< run.conclusion_label >>:} << run.conclusion_text >>
+
+\textbf{Detailed record:} Experiment Notebook, << run.id >>.
+
+\Needspace{4\baselineskip}
+\textbf{Evidence:}
+\begin{itemize}
+<% for evidence_ref in run.evidence_refs %>\item << evidence_ref >>
+<% endfor %>\end{itemize}
 <% endfor %>
 
 \section{Annual outcome and remaining limitations}
@@ -132,16 +189,34 @@ methods, execution events, and observations in document 02.}
 \RDAuditNote{Classifications below are supplier-authored record classifications,
 not eligibility determinations made by this publisher.}
 <% for activity in overview.activities %>
+\Needspace{16\baselineskip}
 \subsection{<< activity.id >>: << activity.title >>}
 \textbf{Supplied classification:} << activity.classification >>.
+
 \textbf{Classification owner:} << activity.classification_owner >>.
-\textbf{Period:} << activity.period_start >> -- << activity.period_end >>.\\
+
+\textbf{Period:} << activity.period_start >> -- << activity.period_end >>.
+
 << activity.description >>
 
-\textbf{Rationale:} << activity.rationale >>\\
-\textbf{Projects:} << activity.project_refs | join(', ') >>.
-<% if activity.uncertainty_refs %>\textbf{Uncertainties:} << activity.uncertainty_refs | join(', ') >>.<% endif %>
-<% if activity.experiment_refs %>\textbf{Experiments:} << activity.experiment_refs | join(', ') >>.<% endif %>
+\textbf{Rationale:} << activity.rationale >>
+
+\Needspace{4\baselineskip}
+\textbf{Projects:}
+\begin{itemize}
+<% for project_ref in activity.project_refs %>\item << project_ref >>
+<% endfor %>\end{itemize}
+<% if activity.uncertainty_refs %>\Needspace{4\baselineskip}
+\textbf{Uncertainties:}
+\begin{itemize}
+<% for uncertainty_ref in activity.uncertainty_refs %>\item << uncertainty_ref >>
+<% endfor %>\end{itemize}
+<% endif %><% if activity.experiment_refs %>\Needspace{4\baselineskip}
+\textbf{Experiments:}
+\begin{itemize}
+<% for experiment_ref in activity.experiment_refs %>\item << experiment_ref >>
+<% endfor %>\end{itemize}
+<% endif %>
 <% endfor %>
 
 \section{Evidence index}
